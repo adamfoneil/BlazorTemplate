@@ -1,4 +1,4 @@
-using Application.Client;
+using Application.Client.Models;
 using Domain;
 using Domain.Extensions;
 using Microsoft.AspNetCore.Components;

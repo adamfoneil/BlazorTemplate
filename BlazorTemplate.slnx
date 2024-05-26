@@ -1,5 +1,7 @@
 <Solution>
-  <Folder Name="/Libraries/" />
+  <Folder Name="/Libraries/">
+    <Project Path="ApiClientBaseLibrary\ApiClientBaseLibrary.csproj" />
+  </Folder>
   <Project Path="Application\Application.Client\Application.Client.csproj" />
   <Project Path="Application\Application\Application.csproj" />
   <Project Path="Domain\Domain.csproj" />
