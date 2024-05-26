@@ -5,6 +5,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-App-c35e57c9-de52-4fd2-8910-f676839036dc</UserSecretsId>
+	<RestoreAdditionalProjectSources>
+		https://aosoftware.blob.core.windows.net/packages/index.json
+	</RestoreAdditionalProjectSources>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +18,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.5" />
+    <PackageReference Include="Radzen.Blazor" Version="4.32.1" />
+	<PackageReference Include="AO.Radzen.Components" Version="1.0.5" />
   </ItemGroup>
 
 </Project>
