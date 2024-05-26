@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject BaseUrlProvider BaseUrlProvider
+@inject NavigationManager Nav
 
 <RadzenComponents />
 
@@ -23,3 +25,11 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code {
+    protected override Task OnInitializedAsync()
+    {
+        BaseUrlProvider.Set(Nav.BaseUri);
+        return base.OnInitializedAsync();
+    }
+}

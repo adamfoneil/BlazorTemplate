@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Libraries/">
     <Project Path="ApiClientBaseLibrary\ApiClientBaseLibrary.csproj" />
+    <Project Path="AuthLibrary\AuthLibrary.csproj" Type="Classic C#" />
   </Folder>
   <Project Path="Application\Application.Client\Application.Client.csproj" />
   <Project Path="Application\Application\Application.csproj" />

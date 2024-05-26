@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ApiClientBaseLibrary\ApiClientBaseLibrary.csproj" />
+    <ProjectReference Include="..\..\AuthLibrary\AuthLibrary.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.csproj" />
     <ProjectReference Include="..\..\Service\Service.csproj" />
   </ItemGroup>
