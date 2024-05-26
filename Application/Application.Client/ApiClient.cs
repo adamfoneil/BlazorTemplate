@@ -1,6 +1,6 @@
 ﻿using ApiClientBaseLibrary;
 
-namespace Service;
+namespace Application.Client;
 
 public partial class ApiClient(
 	IHttpClientFactory factory, 

@@ -1,4 +1,4 @@
-﻿namespace Service;
+﻿namespace Application.Client;
 
 /// <summary>
 /// provides a way to trigger UI feedback when the backend is working

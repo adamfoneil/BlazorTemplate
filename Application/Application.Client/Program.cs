@@ -9,5 +9,6 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
 builder.Services.AddRadzenComponents();
+builder.Services.AddScoped<BackendWorkIndicator>();
 
 await builder.Build().RunAsync();
