@@ -17,6 +17,7 @@ public class WidgetConfig : IEntityTypeConfiguration<Widget>
 {
     public void Configure(EntityTypeBuilder<Widget> builder)
     {
+        builder.HasAlternateKey(nameof(Widget.Name));
         builder.Property(e => e.Name).HasMaxLength(50).IsRequired();
         builder.Property(e => e.Description).HasMaxLength(255);
     }
