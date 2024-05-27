@@ -15,7 +15,7 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 
 	protected virtual void OnStarted(HttpMethod method, string uri) { }
 
-	protected virtual void OnStopped(HttpMethod method, string uri) { }
+	protected virtual void OnStopped(HttpMethod method, string uri, bool success) { }
 
 	protected virtual async Task<bool> ThrowExceptionAsync(HttpResponseMessage? response, Exception exception, [CallerMemberName] string? methodName = null) => await Task.FromResult(true);
 
@@ -23,11 +23,13 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 	{
 		OnStarted(HttpMethod.Get, uri);
 		var response = await Client.GetAsync(uri);
+		bool success = false;
 
 		try
 		{
 			//var content = await response.Content.ReadAsStringAsync();
 			response.EnsureSuccessStatusCode();
+			success = true;
 			return await response.Content.ReadFromJsonAsync<T>();
 		}
 		catch (Exception exc)
@@ -38,7 +40,7 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 		}
 		finally
 		{
-			OnStopped(HttpMethod.Get, uri);
+			OnStopped(HttpMethod.Get, uri, success);
 		}
 	}
 
@@ -46,10 +48,12 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 	{
 		OnStarted(HttpMethod.Post, uri);
 		var response = await Client.PostAsync(uri, null);
+		bool success = false;
 
 		try
 		{
 			response.EnsureSuccessStatusCode();
+			success = true;
 			return await response.Content.ReadFromJsonAsync<TResult>();
 		}
 		catch (Exception exc)
@@ -60,18 +64,20 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 		}
 		finally
 		{
-			OnStopped(HttpMethod.Post, uri);
+			OnStopped(HttpMethod.Post, uri, success);
 		}
 	}
 
 	protected async Task PostWithInputAsync<T>(string uri, T value)
 	{
-		OnStarted(HttpMethod.Post, uri);
+		OnStarted(HttpMethod.Post, uri);		
 		var response = await Client.PostAsJsonAsync(uri, value);
+		bool success = false;
 
 		try
 		{
 			response.EnsureSuccessStatusCode();
+			success = true;
 		}
 		catch (Exception exc)
 		{
@@ -81,7 +87,7 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 		}
 		finally
 		{
-			OnStopped(HttpMethod.Post, uri);
+			OnStopped(HttpMethod.Post, uri, success);
 		}
 	}
 
@@ -89,10 +95,12 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 	{
 		OnStarted(HttpMethod.Post, uri);
 		var response = await Client.PostAsJsonAsync(uri, input);
+		bool success = false;
 
 		try
 		{
 			response.EnsureSuccessStatusCode();
+			success = true;
 			return await response.Content.ReadFromJsonAsync<TResult>();
 		}
 		catch (Exception exc)
@@ -103,7 +111,7 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 		}
 		finally
 		{
-			OnStopped(HttpMethod.Post, uri);
+			OnStopped(HttpMethod.Post, uri, success);
 		}
 	}
 
@@ -111,10 +119,12 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 	{
 		OnStarted(HttpMethod.Delete, uri);
 		var response = await Client.DeleteAsync(uri);
+		bool success = false;
 
 		try
 		{
 			response.EnsureSuccessStatusCode();
+			success = true;
 		}
 		catch (Exception exc)
 		{
@@ -124,7 +134,7 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 		}
 		finally
 		{
-			OnStopped(HttpMethod.Delete, uri);
+			OnStopped(HttpMethod.Delete, uri, success);
 		}
 	}
 }
