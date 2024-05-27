@@ -22,7 +22,6 @@ public abstract class CookieAuthenticationStateProvider<TUserInfo>(HttpClient ht
         };
 
     private readonly ClaimsPrincipal _anonUser = new(new ClaimsIdentity());
-
     private readonly HttpClient _httpClient = httpClient;
     private readonly ILogger<CookieAuthenticationStateProvider<TUserInfo>> _logger = logger;
 
