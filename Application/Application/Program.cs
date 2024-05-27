@@ -4,11 +4,13 @@ using Application.Components.Account;
 using Application.Extensions;
 using AuthLibrary;
 using Domain;
+using Domain.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
 using Service;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,7 +77,17 @@ app.MapRazorComponents<Application.Components.App>()
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 
-var apiGroup = app.MapGroup("/api");//.RequireAuthorization();
+var apiGroup = app.MapGroup("/api").RequireAuthorization();
+
+apiGroup.MapGet("/userinfo", async (HttpContext context) =>
+{
+    var sp = context.RequestServices;
+    var userManager = sp.GetRequiredService<UserManager<ApplicationUser>>();
+    var user = await userManager.GetUserAsync(context.User);
+    if (user is null) return Results.NotFound();
+    return Results.Ok(user.ToClaims());
+});
+
 apiGroup.MapDbSet("/widgets", (db) => db.Widgets);
 
 app.Run();
