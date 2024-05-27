@@ -1,5 +1,6 @@
 using Application;
 using Application.Client;
+using Application.Client.Models;
 using Application.Components.Account;
 using Application.Extensions;
 using AuthLibrary;
@@ -49,6 +50,8 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 builder.Services.AddHttpClient<CookieHandler>(ApiClient.Name, (sp, client) => sp.GetRequiredService<BaseUrlProvider>().BaseUrl);
 
+builder.Services.MigrateDatabase<ApplicationDbContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -84,7 +87,7 @@ apiGroup.MapGet("/userinfo", async (HttpContext context) =>
     var userManager = sp.GetRequiredService<UserManager<ApplicationUser>>();
     var user = await userManager.GetUserAsync(context.User);
     if (user is null) return Results.NotFound();
-    return Results.Ok(user.ToClaims());
+    return Results.Ok(UserInfo.FromApplicationUser(user));
 });
 
 apiGroup.MapDbSet("/widgets", (db) => db.Widgets);

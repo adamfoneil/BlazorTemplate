@@ -8,7 +8,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
-builder.Services.AddSingleton<AuthenticationStateProvider, CookieAuthStateProvider>();
+builder.Services.AddSingleton<AuthenticationStateProvider, AppCookieAuthStateProvider>();
 builder.Services.AddRadzenComponents();
 builder.Services.AddScoped<BackendWorkIndicator>();
 builder.Services.AddScoped<ApiClient>();

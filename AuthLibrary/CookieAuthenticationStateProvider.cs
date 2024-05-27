@@ -9,7 +9,7 @@ namespace AuthLibrary;
 /// <summary>
 /// based on https://github.com/dotnet/blazor-samples/blob/main/8.0/BlazorWebAssemblyStandaloneWithIdentity/BlazorWasmAuth/Identity/CookieAuthenticationStateProvider.cs
 /// </summary>
-public abstract class CookieAuthenticationStateProvider(HttpClient httpClient, ILogger<CookieAuthenticationStateProvider> logger) : AuthenticationStateProvider
+public abstract class CookieAuthenticationStateProvider<TUserInfo>(HttpClient httpClient, ILogger<CookieAuthenticationStateProvider<TUserInfo>> logger) : AuthenticationStateProvider
 {
     private bool _authenticated = false;
 
@@ -22,13 +22,17 @@ public abstract class CookieAuthenticationStateProvider(HttpClient httpClient, I
     private readonly ClaimsPrincipal _anonUser = new(new ClaimsIdentity());
 
     private readonly HttpClient _httpClient = httpClient;
-    private readonly ILogger<CookieAuthenticationStateProvider> _logger = logger;
+    private readonly ILogger<CookieAuthenticationStateProvider<TUserInfo>> _logger = logger;
 
     /// <summary>
-    /// where to get the user info from, should return Claim array
+    /// where to get the user info from, should return TUserInfo
     /// </summary>
     protected abstract string UserInfoEndpoint { get; }
     
+    /// <summary>
+    /// how do we convert TUserInfo to a set of claims?
+    /// </summary>
+    protected abstract IEnumerable<Claim> GetClaims(TUserInfo userInfo);
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
@@ -41,8 +45,10 @@ public abstract class CookieAuthenticationStateProvider(HttpClient httpClient, I
         try
         {
             response.EnsureSuccessStatusCode();
-            var claims = await response.Content.ReadFromJsonAsync<Claim[]>() ?? throw new Exception("Couldn't deserialize user info");            
-            user = new ClaimsPrincipal(new ClaimsIdentity(claims, nameof(CookieAuthenticationStateProvider)));
+            var userInfo = await response.Content.ReadFromJsonAsync<TUserInfo>() ?? throw new Exception("Couldn't deserialize user info");            
+            var claims = GetClaims(userInfo);
+            user = new ClaimsPrincipal(new ClaimsIdentity(claims, nameof(CookieAuthenticationStateProvider<TUserInfo>)));
+            _authenticated = true;
         }
         catch (Exception exc)
         {

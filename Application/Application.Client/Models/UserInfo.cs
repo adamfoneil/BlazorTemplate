@@ -1,3 +1,4 @@
+using Domain;
 using Domain.Interfaces;
 
 namespace Application.Client.Models;
@@ -11,4 +12,13 @@ public class UserInfo : IUserInfo
     public string? UserName { get; set; }
     public string? TimeZoneId { get; set; }
     public string? PhoneNumber { get; set; }
+
+    public static UserInfo FromApplicationUser(ApplicationUser user) => new UserInfo
+    {
+        Id = user.Id,
+        Email = user.Email,
+        UserName = user.UserName,
+        TimeZoneId = user.TimeZoneId,
+        PhoneNumber = user.PhoneNumber
+    };
 }
