@@ -13,3 +13,12 @@
 <AuthorizeView>
     Hello @context.User.Identity?.Name!
 </AuthorizeView>
+
+@code {
+    private IEnumerable<Widget> widgets = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        widgets = await Api.GetMyWidgetsAsync();
+    }
+}
