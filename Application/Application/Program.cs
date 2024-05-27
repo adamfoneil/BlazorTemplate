@@ -5,7 +5,6 @@ using Application.Components.Account;
 using Application.Extensions;
 using AuthLibrary;
 using Domain;
-using Domain.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +12,8 @@ using Radzen;
 using Service;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

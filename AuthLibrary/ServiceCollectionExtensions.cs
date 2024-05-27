@@ -8,7 +8,7 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddTransient<THandler>()
-            .AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(clientName))
+            .AddSingleton(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(clientName))
             .AddHttpClient(clientName, (sp, client) =>
             {
                 client.BaseAddress = new Uri(baseUrlAccessor(sp, client));
