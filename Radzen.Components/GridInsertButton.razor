@@ -1,0 +1,36 @@
+﻿@typeparam TItem
+@using global::Radzen
+@using global::Radzen.Blazor
+
+@if (!Visible) return;
+
+<div class="d-flex justify-content-between my-2">
+	<RadzenButton Icon="add_circle_outline" Text="Add" Click="@((args) => Grid!.InsertRow(OnCreateItem!.Invoke()))" Disabled="disabled"/>
+	
+	<div>
+		@ChildContent
+	</div>
+</div>
+
+@code {    
+	bool disabled = true;
+
+	[Parameter, EditorRequired]
+	public RadzenGrid<TItem>? Grid { get; set; }
+
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	[Parameter, EditorRequired]
+	public Func<TItem>? OnCreateItem { get; set; }
+
+	[Parameter]
+	public bool Visible { get; set; } = true;
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+
+		disabled = Grid == null;
+	}
+}

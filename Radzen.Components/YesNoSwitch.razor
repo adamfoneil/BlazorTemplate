@@ -1,0 +1,42 @@
+@using global::Radzen
+@using global::Radzen.Blazor
+
+<div class="d-flex align-items-center @Css.GetClass(Parameters)">
+    <RadzenSwitch Value="@Value" ValueChanged="OnValueChanged" Disabled="Disabled"/>
+    <span class="ml-2" @onclick="ToggleValue" style="cursor:pointer">@Text</span>
+</div>
+
+@code {
+    [Parameter]
+    public bool Value { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ValueChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnChanged { get; set; }
+
+    [Parameter]
+    public string TrueText { get; set; } = "Yes";
+
+    [Parameter]
+    public string FalseText { get; set; } = "No";
+
+    [Parameter]
+    public bool Disabled { get; set; } = false;
+
+    string Text => (Value) ? TrueText : FalseText;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> Parameters { get; set; } = [];
+
+    async Task OnValueChanged(bool value)
+    {
+        if (Disabled) return;
+        Value = value;
+        await ValueChanged.InvokeAsync(value);
+        await OnChanged.InvokeAsync(value);
+    }
+
+    async Task ToggleValue() => await OnValueChanged(!Value);
+}

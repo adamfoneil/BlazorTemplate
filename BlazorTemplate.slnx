@@ -1,7 +1,8 @@
 <Solution>
   <Folder Name="/Libraries/">
     <Project Path="ApiClientBaseLibrary\ApiClientBaseLibrary.csproj" />
-    <Project Path="AuthLibrary\AuthLibrary.csproj" Type="Classic C#" />
+    <Project Path="AuthLibrary\AuthLibrary.csproj" />
+    <Project Path="Radzen.Components\Radzen.Components.csproj" />
   </Folder>
   <Project Path="Application\Application.Client\Application.Client.csproj" />
   <Project Path="Application\Application\Application.csproj" />

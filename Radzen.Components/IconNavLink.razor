@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+@using global::Radzen
+@using global::Radzen.Blazor
+
+<div class="nav-item @ContainerDivClass">
+    <NavLink class="nav-link" href="@Href" Match="@Match">
+        <div class="d-flex align-items-center">
+            <RadzenIcon Icon="@Icon" />
+            <span class="ms-2 text-nowrap">@Text</span>
+        </div>
+    </NavLink>
+</div>
+
+@code {
+    [Parameter]
+    public string ContainerDivClass { get; set; } = "px-3";
+
+    [Parameter]
+    public string Href { get; set; } = default!;
+
+    [Parameter]
+    public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+
+    [Parameter]
+    public string Icon { get; set; } = default!;
+
+    [Parameter]
+    public string Text { get; set; } = default!;
+}

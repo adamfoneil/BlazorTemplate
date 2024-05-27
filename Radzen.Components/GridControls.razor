@@ -1,0 +1,53 @@
+﻿@typeparam TItem
+@using global::Radzen
+@using global::Radzen.Blazor
+@inject DialogService Dialog
+
+<RadzenGridColumn TItem="TItem" Width="@Width" Visible="@Visible">
+	<Template>        
+		<RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit" Click="@(args => Grid!.EditRow(context))" class="me-2" Visible="AllowEditIf.Invoke(context)" />
+		<RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Click="@(args => OnDeleteRow(context))" Visible="AllowDeleteIf.Invoke(context)" />
+		@ChildContent?.Invoke(context)
+	</Template>
+	<EditTemplate>
+		<RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="save" Click="@((args) => Grid!.UpdateRow(context))" class="mr-2" />
+		<RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="cancel" Click="@((args) => Grid!.CancelEditRow(context))" />
+	</EditTemplate>
+</RadzenGridColumn>
+
+@code {
+	[Parameter, EditorRequired]
+	public RadzenGrid<TItem>? Grid { get; set; }
+
+	[Parameter]
+	public bool ShowConfirmDialog { get; set; } = true;
+
+	[Parameter]
+	public EventCallback<TItem> DeletingRow { get; set; }
+
+	[Parameter]
+	public string Width { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment<TItem>? ChildContent { get; set; }
+
+	[Parameter]
+	public Func<TItem, bool> AllowDeleteIf { get; set; } = (item) => true;
+
+	[Parameter]
+	public Func<TItem, bool> AllowEditIf { get; set; } = (item) => true;
+
+	[Parameter]
+	public bool Visible { get; set; } = true;
+
+	async Task OnDeleteRow(TItem row)
+	{
+		if (ShowConfirmDialog)
+		{
+			var result = await Dialog.Confirm("This will delete the row permanently.", "Delete Row");
+			if (result.HasValue && !result.Value) return;
+		}
+
+		await DeletingRow.InvokeAsync(row);
+	}
+}

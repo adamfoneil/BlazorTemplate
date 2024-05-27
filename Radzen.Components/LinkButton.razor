@@ -1,0 +1,59 @@
+@using global::Radzen
+@using global::Radzen.Blazor
+
+<RadzenLink Path="@Path" Text="@Text" class="@CssClass" Icon="@Icon" />
+
+@code {
+	private string CssClass => $"rz-button {SizeCssClass} {VariantCssClass} {ButtonStyleClass} rz-shade-default {Css.GetClass(Parameters)}";
+
+	private string ButtonStyleClass => ButtonStyle switch
+	{
+		ButtonStyle.Primary => "rz-primary",
+		ButtonStyle.Secondary => "rz-secondary",
+		ButtonStyle.Success => "rz-success",
+		ButtonStyle.Info => "rz-info",
+		ButtonStyle.Warning => "rz-warning",
+		ButtonStyle.Danger => "rz-danger",
+		ButtonStyle.Light => "rz-light",
+		ButtonStyle.Dark => "rz-dark",		
+		_ => "rz-primary"
+	};
+
+	private string VariantCssClass => Variant switch
+	{
+		Variant.Filled => "rz-variant-filled",
+		Variant.Outlined => "rz-variant-outlined",
+		Variant.Flat => "rz-variant-flat",
+		Variant.Text => "rz-variant-text",
+		_ => "rz-variant-filled"
+	};
+
+	private string SizeCssClass => Size switch
+	{
+		ButtonSize.Small => "rz-button-sm",
+		ButtonSize.Medium => "rz-button-md",
+		ButtonSize.Large => "rz-button-lg",
+		_ => "rz-button-md"
+	};
+
+	[Parameter]
+	public string Path { get; set; } = default!;
+
+	[Parameter]
+	public string Text { get; set; } = default!;
+
+	[Parameter]
+	public string Icon { get; set; } = default!;
+
+	[Parameter]
+	public ButtonStyle ButtonStyle { get; set; } = ButtonStyle.Primary;
+
+	[Parameter]
+	public ButtonSize Size { get; set; } = ButtonSize.Medium;
+
+	[Parameter]
+	public Variant Variant { get; set; } = Variant.Filled;
+
+	[Parameter(CaptureUnmatchedValues = true)]
+	public Dictionary<string, object> Parameters { get; set; } = [];
+}

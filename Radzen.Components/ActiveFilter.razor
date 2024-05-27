@@ -1,0 +1,59 @@
+@using global::Radzen
+@using global::Radzen.Blazor
+
+<RadzenDropDown TValue="bool?"
+                AllowClear="true" 
+                Data="items" ValueProperty="Value" TextProperty="Text" 
+                Value="Value" ValueChanged="@((val) => OnValueChanged(val))" class="@Css.GetClass(Parameters)"/>
+
+@code {
+    IEnumerable<Item> items = [];
+
+    [Parameter]
+    public string ActiveText { get; set; } = "Active";
+
+    [Parameter]
+    public string InactiveText { get; set; } = "Inactive";
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> Parameters { get; set; } = [];
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        items = new Item[]
+        {
+            new Item(true, ActiveText),
+            new Item(false, InactiveText)
+        };
+    }
+
+    [Parameter]
+    public bool? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<bool?> Change { get; set; }
+
+    [Parameter]
+    public EventCallback<bool?> ValueChanged { get; set; }
+
+    async Task OnValueChanged(bool? value)
+    {
+        Value = value;
+        await ValueChanged.InvokeAsync(value);
+        await Change.InvokeAsync(value);
+    }
+
+    class Item
+    {
+        public Item(bool value, string text)
+        {
+            Value = value;
+            Text = text;
+        }
+
+        public bool Value { get; }
+        public string Text { get; }
+    }
+}

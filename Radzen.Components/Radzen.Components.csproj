@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>AO.Radzen.Components</RootNamespace>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>AO.Radzen.Components</PackageId>
+    <Title>AO Radzen Components</Title>
+    <Version>1.0.5</Version>
+    <Authors>Adam O'Neil</Authors>
+    <Description>Opinionated use of select Radzen Blazor components</Description>
+    <Copyright>Copyright (c) 2024 Adam O'Neil</Copyright>
+    <PackageProjectUrl>https://github.com/adamfoneil/LiteInvoice3</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/adamfoneil/LiteInvoice3</RepositoryUrl>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.4" />
+    <PackageReference Include="Radzen.Blazor" Version="4.29.8" />
+  </ItemGroup>
+
+</Project>
