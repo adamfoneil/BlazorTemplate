@@ -10,7 +10,7 @@ builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
-builder.Services.AddSingleton<AuthenticationStateProvider, AppCookieAuthStateProvider>();
+builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
 builder.Services.AddRadzenComponents();
 builder.Services.AddScoped<BackendWorkIndicator>();
 builder.Services.AddScoped<ApiClient>();
