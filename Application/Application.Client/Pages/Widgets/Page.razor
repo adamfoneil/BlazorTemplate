@@ -1,7 +1,6 @@
 ﻿@page "/Widgets"
 @rendermode InteractiveWebAssembly
 @attribute [Authorize]
-@inject AuthenticationStateProvider AuthState
 
 <h3>My Widgets</h3>
 
@@ -48,8 +47,6 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		var authState = await AuthState.GetAuthenticationStateAsync();
-
 		gridHelper = new(Dialog, Api);
 		await gridHelper.RefreshAsync();
 	}
