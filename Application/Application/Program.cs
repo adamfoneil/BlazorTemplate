@@ -26,6 +26,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAu
 builder.Services.AddSingleton<BaseUrlProvider>();
 builder.Services.AddScoped<BackendWorkIndicator>();
 builder.Services.AddScoped<ApiClient>();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -63,7 +64,6 @@ else
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 app.UseAntiforgery();
 
