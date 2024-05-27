@@ -5,20 +5,20 @@
 /// </summary>
 public class BackendWorkIndicator
 {
-    public bool IsWorking { get; private set; }
+	public bool IsWorking { get; private set; }
 
-    public event Action? OnStarted;
-    public event Action? OnStopped;
+	public event Action? OnStarted;
+	public event Action? OnStopped;
 
-    public void Start()
-    {
-        IsWorking = true;
-        OnStarted?.Invoke();
-    }
+	public void Start()
+	{
+		IsWorking = true;
+		OnStarted?.Invoke();
+	}
 
-    public void Stop()
-    {
-        IsWorking = false;
-        OnStopped?.Invoke();
-    }
+	public void Stop()
+	{
+		IsWorking = false;
+		OnStopped?.Invoke();
+	}
 }

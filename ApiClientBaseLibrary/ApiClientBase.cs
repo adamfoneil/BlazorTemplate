@@ -35,8 +35,8 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 		catch (Exception exc)
 		{
 			Logger.LogError(exc, "Error in {Method}", nameof(GetAsync));
-			if (!await ThrowExceptionAsync(response, exc)) return default;				
-			throw;            
+			if (!await ThrowExceptionAsync(response, exc)) return default;
+			throw;
 		}
 		finally
 		{
@@ -70,7 +70,7 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 
 	protected async Task PostWithInputAsync<T>(string uri, T value)
 	{
-		OnStarted(HttpMethod.Post, uri);		
+		OnStarted(HttpMethod.Post, uri);
 		var response = await Client.PostAsJsonAsync(uri, value);
 		bool success = false;
 
@@ -83,7 +83,7 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 		{
 			Logger.LogError(exc, "Error in {Method}", nameof(PostWithInputAsync));
 			if (!await ThrowExceptionAsync(response, exc)) return;
-			throw;            
+			throw;
 		}
 		finally
 		{
@@ -130,7 +130,7 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 		{
 			Logger.LogError(exc, "Error in {Method}", nameof(DeleteAsync));
 			if (!await ThrowExceptionAsync(response, exc)) return;
-            throw;
+			throw;
 		}
 		finally
 		{

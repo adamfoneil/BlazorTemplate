@@ -8,13 +8,13 @@ namespace Domain;
 // Add profile data for application users by adding properties to the ApplicationUser class
 public class ApplicationUser : IdentityUser, IUserInfo
 {
-    public string? TimeZoneId { get; set; } = default!;
+	public string? TimeZoneId { get; set; } = default!;
 }
 
 public class ApplicationUserConfig : IEntityTypeConfiguration<ApplicationUser>
 {
-    public void Configure(EntityTypeBuilder<ApplicationUser> builder)
-    {
-        builder.Property(e => e.TimeZoneId).HasMaxLength(50);
-    }
+	public void Configure(EntityTypeBuilder<ApplicationUser> builder)
+	{
+		builder.Property(e => e.TimeZoneId).HasMaxLength(50);
+	}
 }
