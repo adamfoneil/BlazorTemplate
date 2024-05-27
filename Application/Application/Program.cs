@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
 using Service;
-using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
