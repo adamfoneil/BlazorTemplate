@@ -14,12 +14,16 @@ public partial class ApiClient(
     /// <summary>
     /// this makes a loading gif appear
     /// </summary>
-    protected override void OnStarted() => _worker.Start();
+    protected override void OnStarted(HttpMethod method, string uri)
+    {
+        Logger.LogDebug("Started {Method} {Uri}", method, uri);
+        _worker.Start();
+    }
 
     /// <summary>
     /// makes the loading gif disappear
     /// </summary>
-    protected override void OnStopped() => _worker.Stop();
+    protected override void OnStopped(HttpMethod method, string uri) => _worker.Stop();    
 
     // todo: add your API client calls to this class as partial classes in feature folders throughout your project
 }

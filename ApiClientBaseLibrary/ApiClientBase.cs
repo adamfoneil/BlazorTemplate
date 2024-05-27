@@ -12,13 +12,13 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 
     protected HttpClient Client { get; } = httpClient;
 
-    protected virtual void OnStarted() { }
+    protected virtual void OnStarted(HttpMethod method, string uri) { }
 
-    protected virtual void OnStopped() { }
+    protected virtual void OnStopped(HttpMethod method, string uri) { }
 
     protected async Task<T?> GetAsync<T>(string uri)
     {
-        OnStarted();
+        OnStarted(HttpMethod.Get, uri);
         var response = await Client.GetAsync(uri);
 
         try
@@ -34,13 +34,13 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
         }
         finally
         {
-            OnStopped();
+            OnStopped(HttpMethod.Get, uri);
         }
     }
 
     protected async Task<TResult?> PostWithResultAsync<TResult>(string uri)
     {
-        OnStarted();
+        OnStarted(HttpMethod.Post, uri);
         var response = await Client.PostAsync(uri, null);
 
         try
@@ -55,13 +55,13 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
         }
         finally
         {
-            OnStopped();
+            OnStopped(HttpMethod.Post, uri);
         }
     }
 
     protected async Task PostWithInputAsync<T>(string uri, T value)
     {
-        OnStarted();
+        OnStarted(HttpMethod.Post, uri);
         var response = await Client.PostAsJsonAsync(uri, value);
 
         try
@@ -75,13 +75,13 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
         }
         finally
         {
-            OnStopped();
+            OnStopped(HttpMethod.Post, uri);
         }
     }
 
     protected async Task<TResult?> PostWithInputAndResultAsync<TResult>(string uri, TResult input)
     {
-        OnStarted();
+        OnStarted(HttpMethod.Post, uri);
         var response = await Client.PostAsJsonAsync(uri, input);
 
         try
@@ -96,13 +96,13 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
         }
         finally
         {
-            OnStopped();
+            OnStopped(HttpMethod.Post, uri);
         }
     }
 
     protected async Task DeleteAsync(string uri)
     {
-        OnStarted();
+        OnStarted(HttpMethod.Delete, uri);
         var response = await Client.DeleteAsync(uri);
 
         try
@@ -116,7 +116,7 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
         }
         finally
         {
-            OnStopped();
+            OnStopped(HttpMethod.Delete, uri);
         }
     }
 }
