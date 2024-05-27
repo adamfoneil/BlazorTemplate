@@ -1,4 +1,5 @@
 ﻿using ApiClientBaseLibrary;
+using System.Runtime.CompilerServices;
 
 namespace Application.Client;
 
@@ -23,7 +24,10 @@ public partial class ApiClient(
     /// <summary>
     /// makes the loading gif disappear
     /// </summary>
-    protected override void OnStopped(HttpMethod method, string uri) => _worker.Stop();    
+    protected override void OnStopped(HttpMethod method, string uri) => _worker.Stop();
+
+    protected override async Task<bool> ThrowExceptionAsync(HttpResponseMessage? response, Exception exception, [CallerMemberName] string? methodName = null) => 
+        await Task.FromResult(false);    
 
     // todo: add your API client calls to this class as partial classes in feature folders throughout your project
 }
