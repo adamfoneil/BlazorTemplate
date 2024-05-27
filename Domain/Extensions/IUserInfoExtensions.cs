@@ -11,12 +11,12 @@ public static class IUserInfoExtensions
         yield return new Claim(ClaimTypes.Name, user.UserName!);
         yield return new Claim(ClaimTypes.Email, user.Email!);
 
-        if (user.TimeZoneId is not null)
+        if (!string.IsNullOrEmpty(user.TimeZoneId))
         {
             yield return new Claim(nameof(ApplicationUser.TimeZoneId), user.TimeZoneId!);
         }
 
-        if (user.PhoneNumber is not null)
+        if (!string.IsNullOrEmpty(user.PhoneNumber))
         {
             yield return new Claim(ClaimTypes.MobilePhone, user.PhoneNumber!);
         }
