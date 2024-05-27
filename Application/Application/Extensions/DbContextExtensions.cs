@@ -24,12 +24,9 @@ public static class DbContextExtensions
                 .Where(row => row.CreatedBy == db.CurrentUser.UserName && row.Id == id)
                 .FirstOrDefaultAsync();
 
-            if (result is not null)
-            {
-                return Results.Ok(result);
-            }
+            if (result is null) return Results.NotFound();
 
-            return Results.NotFound();
+            return Results.Ok(result);            
         });
 
         routeBuilder.MapPost(pattern, async (ApplicationDbContext db, HttpContext context) =>
