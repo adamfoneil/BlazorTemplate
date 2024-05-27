@@ -1,6 +1,7 @@
 using Application;
 using Application.Client;
 using Application.Components.Account;
+using Application.Extensions;
 using AuthLibrary;
 using Domain;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -23,6 +24,8 @@ builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 builder.Services.AddSingleton<BaseUrlProvider>();
+builder.Services.AddScoped<BackendWorkIndicator>();
+builder.Services.AddScoped<ApiClient>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -67,9 +70,12 @@ app.UseAntiforgery();
 app.MapRazorComponents<Application.Components.App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Application.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(_Imports).Assembly);
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
+
+var apiGroup = app.MapGroup("/api");//.RequireAuthorization();
+apiGroup.MapDbSet("/widgets", (db) => db.Widgets);
 
 app.Run();

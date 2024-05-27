@@ -1,10 +1,11 @@
 ﻿@implements IDisposable
-
+@inject BackendWorkIndicator WorkIndicator
 @inject NavigationManager NavigationManager
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">App</a>
+        <RadzenImage Path="/img/loading-sidebar.gif" Visible="WorkIndicator.IsWorking" Style="width: 30px; height: 30px;" />
     </div>
 </div>
 

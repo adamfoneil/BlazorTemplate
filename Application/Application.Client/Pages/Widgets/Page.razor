@@ -1,0 +1,53 @@
+﻿@page "/Widgets"
+@rendermode InteractiveWebAssembly
+@attribute [Authorize]
+
+<h3>My Widgets</h3>
+
+@if (gridHelper is null) return;
+
+<GridInsertButton Grid="grid" OnCreateItem="() => new Widget()"/>
+
+<RadzenGrid TItem="Widget" Data="gridHelper.Data" RowCreate="gridHelper.SaveRowAsync" RowUpdate="gridHelper.SaveRowAsync" @ref="grid">
+	<Columns>		
+		<RadzenGridColumn TItem="Widget" Property="Name" Title="Widget Name">
+			<EditTemplate>
+				<RadzenTextBox @bind-Value="context.Name" />
+			</EditTemplate>
+		</RadzenGridColumn>
+
+		<RadzenGridColumn TItem="Widget" Property="Description" Title="Description">
+			<EditTemplate>
+				<RadzenTextBox @bind-Value="context.Description" />
+			</EditTemplate>
+		</RadzenGridColumn>
+
+		<RadzenGridColumn TItem="Widget" Property="Price" Title="Price">
+			<EditTemplate>
+				<RadzenNumeric @bind-Value="context.Price" />
+			</EditTemplate>
+		</RadzenGridColumn>
+
+		<RadzenGridColumn TItem="Widget">
+			<Template>
+				Created: @context.DateCreated
+				<br/>
+				Modified: @context.DateModified
+			</Template>
+		</RadzenGridColumn>
+
+		<GridControls Grid="grid" DeletingRow="gridHelper.DeleteRowAsync" TItem="Widget" />
+	</Columns>
+</RadzenGrid>
+
+
+@code {
+	private RadzenGrid<Widget>? grid;
+	private GridHelper? gridHelper;
+
+	protected override async Task OnInitializedAsync()
+	{
+		gridHelper = new(Dialog, Api);
+		await gridHelper.RefreshAsync();
+	}
+}
