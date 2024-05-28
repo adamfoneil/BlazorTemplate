@@ -84,6 +84,12 @@ app.MapAdditionalIdentityEndpoints();
 
 var apiGroup = app.MapGroup("/api").RequireAuthorization();
 
+apiGroup.MapDbSet("/widgets", (db) => db.Widgets);
+
+app.Run();
+
+#region CookieAuthenticationStateProvider
+/*
 apiGroup.MapGet("/userinfo", async (HttpContext context) =>
 {
 	var sp = context.RequestServices;
@@ -92,7 +98,5 @@ apiGroup.MapGet("/userinfo", async (HttpContext context) =>
 	if (user is null) return Results.NotFound();
 	return Results.Ok(UserInfo.FromApplicationUser(user));
 });
-
-apiGroup.MapDbSet("/widgets", (db) => db.Widgets);
-
-app.Run();
+*/
+#endregion
