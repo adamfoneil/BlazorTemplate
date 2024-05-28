@@ -15,7 +15,7 @@ This brings together several opinions I have about how Blazor projects should be
     - see [API endpoint setup](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Program.cs#L85-L87) and
     - [MapDbSet](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Extensions/DbContextExtensions.cs#L12) extension method
 - various Library projects are things that could be extracted to standalone packages, but are in the solution because they're still evolving:
-  - [ApiClientBaseLibrary](https://github.com/adamfoneil/BlazorTemplate/tree/master/ApiClientBaseLibrary)
+  - [ApiClientBaseLibrary](https://github.com/adamfoneil/BlazorTemplate/tree/master/ApiClientBaseLibrary) for low-level http client operations
   - [AuthLibrary](https://github.com/adamfoneil/BlazorTemplate/tree/master/AuthLibrary) has WASM-specific stuff, such as
     - [CookieHandler.cs](https://github.com/adamfoneil/BlazorTemplate/blob/master/AuthLibrary/CookieHandler.cs)
     - [CookieAuthenticationStateProvider.cs](https://github.com/adamfoneil/BlazorTemplate/blob/master/AuthLibrary/CookieAuthenticationStateProvider.cs), although I'm not currently using this
