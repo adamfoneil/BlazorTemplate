@@ -19,6 +19,9 @@ This brings together several opinions I have about how Blazor projects should be
   - [AuthLibrary](https://github.com/adamfoneil/BlazorTemplate/tree/master/AuthLibrary) has WASM-specific stuff, such as
     - [CookieHandler.cs](https://github.com/adamfoneil/BlazorTemplate/blob/master/AuthLibrary/CookieHandler.cs)
     - [CookieAuthenticationStateProvider.cs](https://github.com/adamfoneil/BlazorTemplate/blob/master/AuthLibrary/CookieAuthenticationStateProvider.cs), although I'm not currently using this
+    - a special [AddHttpClient](https://github.com/adamfoneil/BlazorTemplate/blob/master/AuthLibrary/ServiceCollectionExtensions.cs#L7) extension method that lets you setup an http client for WASM use, invoked
+      - in the backend [here](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Program.cs#L52)
+      - in the frontend [here](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application.Client/Program.cs#L18)
   - [Radzen.Components](https://github.com/adamfoneil/BlazorTemplate/tree/master/Radzen.Components) builds upon existing [Radzen](https://blazor.radzen.com/) components, notably
     - [GridControls.razor](https://github.com/adamfoneil/BlazorTemplate/blob/master/Radzen.Components/GridControls.razor) has standard crud controls
     - [GridHelper.cs](https://github.com/adamfoneil/BlazorTemplate/blob/master/Radzen.Components/Abstract/GridHelper.cs) abstract class eliminates a lot of grid code boilerplate    
