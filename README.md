@@ -15,6 +15,7 @@ This brings together several opinions I have about how Blazor projects should be
   - backend [Application](https://github.com/adamfoneil/BlazorTemplate/tree/master/Application/Application)
     - see [API endpoint setup](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Program.cs#L85-L87) and
     - [MapDbSet](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Extensions/DbContextExtensions.cs#L12) extension method
+    - [time zone editing](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Components/Account/Pages/Manage/Index.razor#L32-L41) on the user profile manage page
 - various Library projects are things that could be extracted to standalone packages, but are in the solution because they're still evolving:
   - [ApiClientBaseLibrary](https://github.com/adamfoneil/BlazorTemplate/tree/master/ApiClientBaseLibrary) for low-level http client operations
   - [AuthLibrary](https://github.com/adamfoneil/BlazorTemplate/tree/master/AuthLibrary) has WASM-specific stuff, such as
