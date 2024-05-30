@@ -1,4 +1,4 @@
-This brings together several opinions I have about how Blazor projects should be structured when supporting mixed WASM and Server components.
+This brings together several opinions I have about how Blazor projects should be structured when supporting mixed WASM and Server components. It also adds several practical elements for real applications.
 
 - [Domain](https://github.com/adamfoneil/BlazorTemplate/tree/master/Domain) has entity classes
   - [Widget](https://github.com/adamfoneil/BlazorTemplate/blob/master/Domain/Widget.cs), a generic dummy table you can remove, but is there to demo a crud editing grid later
