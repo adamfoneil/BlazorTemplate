@@ -4,24 +4,28 @@ using Domain.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Service;
 using Service.Extensions;
+using System.Linq.Expressions;
 
 namespace Application.Extensions;
 
 public static class DbContextExtensions
 {
-	public static void MapDbSet<TEntity>(this IEndpointRouteBuilder routeBuilder, string pattern, Func<ApplicationDbContext, DbSet<TEntity>> dbSet) where TEntity : BaseTable
+	public static void MapDbSet<TEntity>(
+		this IEndpointRouteBuilder routeBuilder, 
+		string pattern, Func<ApplicationDbContext, DbSet<TEntity>> dbSet,
+		Expression<Func<TEntity, bool>> filter) where TEntity : BaseTable
 	{
 		routeBuilder.MapGet(pattern, async (ApplicationDbContext db, HttpContext context) =>
 		{
 			db.CurrentUser = context.User.FromClaims<UserInfo>();
-			return Results.Ok(await dbSet.Invoke(db).Where(row => row.CreatedBy == db.CurrentUser.UserName).ToListAsync());
+			return Results.Ok(await dbSet.Invoke(db).Where(filter).ToListAsync());
 		});
 
 		routeBuilder.MapGet($"{pattern}/{{id}}", async (ApplicationDbContext db, HttpContext context, int id) =>
 		{
 			db.CurrentUser = context.User.FromClaims<UserInfo>();
 			var result = await dbSet.Invoke(db)
-				.Where(row => row.CreatedBy == db.CurrentUser.UserName && row.Id == id)
+				.Where(row => filter && row.Id == id)
 				.FirstOrDefaultAsync();
 
 			if (result is null) return Results.NotFound();
@@ -41,7 +45,7 @@ public static class DbContextExtensions
 		routeBuilder.MapDelete($"{pattern}/{{id}}", async (ApplicationDbContext db, HttpContext context, int id) =>
 		{
 			db.CurrentUser = context.User.FromClaims<UserInfo>();
-			await dbSet.Invoke(db).Where(row => row.CreatedBy == db.CurrentUser.UserName && row.Id == id).ExecuteDeleteAsync();
+			await dbSet.Invoke(db).Where(row => filter.Invoke(db, row) && row.Id == id).ExecuteDeleteAsync();
 			return Results.Ok();
 		});
 	}

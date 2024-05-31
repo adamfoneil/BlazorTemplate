@@ -84,7 +84,7 @@ app.MapAdditionalIdentityEndpoints();
 
 var apiGroup = app.MapGroup("/api").RequireAuthorization();
 
-apiGroup.MapDbSet("/widgets", (db) => db.Widgets);
+apiGroup.MapDbSet("/widgets", (db) => db.Widgets, (db, row) => row.CreatedBy == (db.CurrentUser?.UserName ?? "anon"));
 
 app.Run();
 
