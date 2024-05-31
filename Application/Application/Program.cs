@@ -90,6 +90,8 @@ app.Run();
 
 #region CookieAuthenticationStateProvider
 /*
+ * not using this because I'm using Application.Client.PersistentAuthenticationStateProvider.
+ * this would have been used with AppCookieAuthenticationStateProvider.
 apiGroup.MapGet("/userinfo", async (HttpContext context) =>
 {
 	var sp = context.RequestServices;

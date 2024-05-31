@@ -12,5 +12,4 @@ public class AppCookieAuthStateProvider(
 	protected override string UserInfoEndpoint => "/api/userinfo";
 
 	protected override IEnumerable<Claim> GetClaims(UserInfo userInfo) => userInfo.ToClaims();
-
 }
