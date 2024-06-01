@@ -11,7 +11,8 @@ This brings together several opinions I have about how Blazor projects should be
   - frontend [Application.Client](https://github.com/adamfoneil/BlazorTemplate/tree/master/Application/Application.Client)
     - see [ApiClient](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application.Client/ApiClient.cs)
     - see [Widgets](https://github.com/adamfoneil/BlazorTemplate/tree/master/Application/Application.Client/Pages/Widgets) for a working Radzen grid example and related components
-    - see [AppCookieAuthStateProvider.cs](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application.Client/AppCookieAuthStateProvider.cs), a special auth state provider I experimented with, based on `CookieAuthenticationStateProvider` below.
+    - see [ApiEventHandler](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application.Client/ApiEventHandler.cs) to trigger UI feedback when the API is working, along with
+    - [ApiEventUI](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application.Client/Components/ApiEventUI.razor) which uses a loading spinner and error message [Modal](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application.Client/Components/Modal.razor)
   - backend [Application](https://github.com/adamfoneil/BlazorTemplate/tree/master/Application/Application)
     - see [API endpoint setup](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Program.cs#L85-L87) and
     - [MapDbSet](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Extensions/DbContextExtensions.cs#L12) extension method
@@ -20,7 +21,6 @@ This brings together several opinions I have about how Blazor projects should be
   - [ApiClientBaseLibrary](https://github.com/adamfoneil/BlazorTemplate/tree/master/ApiClientBaseLibrary) for low-level http client operations
   - [AuthLibrary](https://github.com/adamfoneil/BlazorTemplate/tree/master/AuthLibrary) has WASM-specific stuff, such as
     - [CookieHandler.cs](https://github.com/adamfoneil/BlazorTemplate/blob/master/AuthLibrary/CookieHandler.cs)
-    - [CookieAuthenticationStateProvider.cs](https://github.com/adamfoneil/BlazorTemplate/blob/master/AuthLibrary/CookieAuthenticationStateProvider.cs) abstract class, although I'm not currently using this
     - a special [AddHttpClient](https://github.com/adamfoneil/BlazorTemplate/blob/master/AuthLibrary/ServiceCollectionExtensions.cs#L7) extension method that lets you setup an http client for WASM use, invoked
       - in the backend [here](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Program.cs#L52)
       - in the frontend [here](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application.Client/Program.cs#L18)
