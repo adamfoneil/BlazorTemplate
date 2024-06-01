@@ -15,4 +15,23 @@ internal static class ServiceCollectionExtensions
 		var context = scope.ServiceProvider.GetRequiredService<T>();
 		context.Database.Migrate();
 	}
+
+	public static void DisableApiRedirectToLogin(this IServiceCollection services)
+    {
+        services.ConfigureApplicationCookie(options =>
+        {
+            options.Events.OnRedirectToLogin = context =>
+            {
+                if (context.Request.Path.StartsWithSegments("/api") && context.Response.StatusCode == 200)
+                {
+                    context.Response.StatusCode = 401;
+                }
+                else
+                {
+                    context.Response.Redirect(context.RedirectUri);
+                }
+                return Task.CompletedTask;
+            };
+        });
+    }
 }

@@ -1,6 +1,5 @@
 using Application;
 using Application.Client;
-using Application.Client.Models;
 using Application.Components.Account;
 using Application.Extensions;
 using AuthLibrary;
@@ -37,6 +36,8 @@ builder.Services.AddAuthentication(options =>
 		options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 	})
 	.AddIdentityCookies();
+
+builder.Services.DisableApiRedirectToLogin();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
