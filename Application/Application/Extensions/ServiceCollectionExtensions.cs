@@ -16,6 +16,10 @@ internal static class ServiceCollectionExtensions
 		context.Database.Migrate();
 	}
 
+	/// <summary>
+	/// you don't want the api to redirect to the login page because the returned html is not a valid API response.
+    /// It's better to return a 401 status code so the client doesn't treat it as a successful response.
+	/// </summary>    
 	public static void DisableApiRedirectToLogin(this IServiceCollection services)
     {
         services.ConfigureApplicationCookie(options =>

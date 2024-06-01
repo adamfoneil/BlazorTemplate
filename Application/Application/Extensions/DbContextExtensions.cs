@@ -9,6 +9,10 @@ namespace Application.Extensions;
 
 public static class DbContextExtensions
 {
+	/// <summary>
+	/// provides a generic way to map crud operations to a route using a DbSet. You'll likely need to change this
+	/// for your application because this starter version assumes that the user is the creator of the entity.
+	/// </summary>	
 	public static void MapDbSet<TEntity>(this IEndpointRouteBuilder routeBuilder, string pattern, Func<ApplicationDbContext, DbSet<TEntity>> dbSet) where TEntity : BaseTable
 	{
 		routeBuilder.MapGet(pattern, async (ApplicationDbContext db, HttpContext context) =>
