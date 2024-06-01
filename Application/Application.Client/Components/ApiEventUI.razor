@@ -1,0 +1,22 @@
+﻿@inject ApiEventHandler EventHandler
+@implements IDisposable
+
+<RadzenImage Path="/img/loading-sidebar.gif" Visible="EventHandler.IsWorking" Style="width: 30px; height: 30px;" />
+
+<Modal @bind-Open="EventHandler.ShowErrorMessage">
+	<p>@EventHandler.ErrorMessage</p>
+</Modal>
+
+@code {
+	protected override void OnInitialized()
+	{
+		EventHandler.OnStarted += StateHasChanged;
+		EventHandler.OnStopped += StateHasChanged;
+	}
+
+	public void Dispose()
+	{
+		EventHandler.OnStarted -= StateHasChanged;
+		EventHandler.OnStopped -= StateHasChanged;
+	}
+}

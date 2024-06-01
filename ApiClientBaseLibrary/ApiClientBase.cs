@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
-using System.Runtime.CompilerServices;
 
 namespace ApiClientBaseLibrary;
 
@@ -17,7 +16,7 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 
 	protected virtual void OnStopped(HttpMethod method, string uri, bool success) { }
 
-	protected virtual async Task<bool> ThrowExceptionAsync(HttpResponseMessage? response, Exception exception, [CallerMemberName] string? methodName = null) => await Task.FromResult(true);
+	protected virtual void OnError(HttpMethod method, string uri, Exception exception) { }
 
 	protected async Task<T?> GetAsync<T>(string uri)
 	{
@@ -27,21 +26,23 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 
 		try
 		{
+			// uncomment this to debug unexpected responses
 			//var content = await response.Content.ReadAsStringAsync();
-			response.EnsureSuccessStatusCode();
+			response.EnsureSuccessStatusCode();			
 			success = true;
 			return await response.Content.ReadFromJsonAsync<T>();
 		}
 		catch (Exception exc)
 		{
 			Logger.LogError(exc, "Error in {Method}", nameof(GetAsync));
-			if (!await ThrowExceptionAsync(response, exc)) return default;
-			throw;
+			OnError(HttpMethod.Get, uri, exc);			
 		}
 		finally
 		{
 			OnStopped(HttpMethod.Get, uri, success);
 		}
+
+		return default;
 	}
 
 	protected async Task<TResult?> PostWithResultAsync<TResult>(string uri)
@@ -59,13 +60,14 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 		catch (Exception exc)
 		{
 			Logger.LogError(exc, "Error in {Method}", nameof(PostWithResultAsync));
-			if (!await ThrowExceptionAsync(response, exc)) return default;
-			throw;
+			OnError(HttpMethod.Post, uri, exc);
 		}
 		finally
 		{
 			OnStopped(HttpMethod.Post, uri, success);
 		}
+
+		return default;
 	}
 
 	protected async Task PostWithInputAsync<T>(string uri, T value)
@@ -82,8 +84,7 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 		catch (Exception exc)
 		{
 			Logger.LogError(exc, "Error in {Method}", nameof(PostWithInputAsync));
-			if (!await ThrowExceptionAsync(response, exc)) return;
-			throw;
+			OnError(HttpMethod.Post, uri, exc);
 		}
 		finally
 		{
@@ -106,13 +107,14 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 		catch (Exception exc)
 		{
 			Logger.LogError(exc, "Error in {Method}", nameof(PostWithInputAndResultAsync));
-			if (!await ThrowExceptionAsync(response, exc)) return default;
-			throw;
+			OnError(HttpMethod.Post, uri, exc);
 		}
 		finally
 		{
 			OnStopped(HttpMethod.Post, uri, success);
 		}
+
+		return default;
 	}
 
 	protected async Task DeleteAsync(string uri)
@@ -129,8 +131,7 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 		catch (Exception exc)
 		{
 			Logger.LogError(exc, "Error in {Method}", nameof(DeleteAsync));
-			if (!await ThrowExceptionAsync(response, exc)) return;
-			throw;
+			OnError(HttpMethod.Delete, uri, exc);
 		}
 		finally
 		{

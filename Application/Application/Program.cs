@@ -26,7 +26,7 @@ builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 builder.Services.AddSingleton<BaseUrlProvider>();
-builder.Services.AddScoped<BackendWorkIndicator>();
+builder.Services.AddScoped<ApiEventHandler>(); // this doesn't seem to work from the backend
 builder.Services.AddScoped<ApiClient>();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 
