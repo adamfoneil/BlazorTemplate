@@ -13,12 +13,12 @@ public partial class ApiClient(
 	private readonly BackendWorkIndicator _worker = backendWorkIndicator;
 
 	/// <summary>
-	/// this makes a loading gif appear
+	/// this should make a loading gif appear in NavMenu.razor
 	/// </summary>
 	protected override void OnStarted(HttpMethod method, string uri)
 	{
-		Logger.LogDebug("Started: {Method} {Uri}", method, uri);
-		_worker.Start();
+        _worker.Start();
+        Logger.LogDebug("Started: {Method} {Uri}", method, uri);		
 	}
 
 	/// <summary>
@@ -26,12 +26,8 @@ public partial class ApiClient(
 	/// </summary>
 	protected override void OnStopped(HttpMethod method, string uri, bool success)
 	{
-		if (success)
-		{
-			Logger.LogDebug("Completed: {Method} {Uri}", method, uri);
-		}
-
-		_worker.Stop();
+        _worker.Stop();
+        if (success) Logger.LogDebug("Success: {Method} {Uri}", method, uri);
 	}
 
 	protected override async Task<bool> ThrowExceptionAsync(HttpResponseMessage? response, Exception exception, [CallerMemberName] string? methodName = null) =>
