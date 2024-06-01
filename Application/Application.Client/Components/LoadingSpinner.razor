@@ -1,0 +1,18 @@
+﻿@inject BackendWorkIndicator WorkIndicator
+@implements IDisposable
+
+<RadzenImage Path="/img/loading-sidebar.gif" Visible="WorkIndicator.IsWorking" Style="width: 30px; height: 30px;" />
+
+@code {
+	protected override void OnInitialized()
+	{
+		WorkIndicator.OnStarted += StateHasChanged;
+		WorkIndicator.OnStopped += StateHasChanged;
+	}
+
+	public void Dispose()
+	{
+		WorkIndicator.OnStarted -= StateHasChanged;
+		WorkIndicator.OnStopped -= StateHasChanged;
+	}
+}
