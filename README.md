@@ -27,3 +27,8 @@ This brings together several opinions I have about how Blazor projects should be
   - [Radzen.Components](https://github.com/adamfoneil/BlazorTemplate/tree/master/Radzen.Components) builds upon existing [Radzen](https://blazor.radzen.com/) components, notably
     - [GridControls.razor](https://github.com/adamfoneil/BlazorTemplate/blob/master/Radzen.Components/GridControls.razor) has standard crud controls
     - [GridHelper.cs](https://github.com/adamfoneil/BlazorTemplate/blob/master/Radzen.Components/Abstract/GridHelper.cs) abstract class eliminates a lot of grid code boilerplate    
+
+# Help From
+- [Dave Archer](https://github.com/ripteqdavid/sample-blazor8-auth-ms)
+- [Meziantou](https://www.meziantou.net/modal-component-in-blazor.htm)
+- [Jon Hilton's community](https://community.practicaldotnet.io/home)
