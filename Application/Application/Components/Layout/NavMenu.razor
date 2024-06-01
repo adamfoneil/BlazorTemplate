@@ -75,8 +75,8 @@
 
     protected override void OnInitialized()
     {
-        WorkIndicator.OnStarted += StateHasChanged;
-        WorkIndicator.OnStopped += StateHasChanged;
+        WorkIndicator.OnStarted += OnWorkStarted;
+        WorkIndicator.OnStopped += OnWorkStopped;
 
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;        
@@ -88,10 +88,14 @@
         StateHasChanged();
     }
 
+    private void OnWorkStarted() => StateHasChanged();
+	
+    private void OnWorkStopped() => StateHasChanged();
+
     public void Dispose()
     {
-        WorkIndicator.OnStarted -= StateHasChanged;
-        WorkIndicator.OnStopped -= StateHasChanged;
+        WorkIndicator.OnStarted -= OnWorkStarted;
+        WorkIndicator.OnStopped -= OnWorkStopped;
         NavigationManager.LocationChanged -= OnLocationChanged;
     }
 }
