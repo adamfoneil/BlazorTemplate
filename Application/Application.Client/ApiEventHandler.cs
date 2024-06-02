@@ -16,7 +16,7 @@ public class ApiEventHandler
 
 	public event Action? OnStarted;
 	public event Action? OnStopped;
-	public event Action<string>? OnError;
+	public event Action? OnError;
 
 	public void Start()
 	{
@@ -36,6 +36,6 @@ public class ApiEventHandler
 		ShowErrorMessage = true;
 		ErrorOccurred = true;
 		ErrorMessage = message;
-		OnError?.Invoke(message);
+		OnError?.Invoke();
 	}
 }

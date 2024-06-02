@@ -10,12 +10,14 @@
 @code {
 	protected override void OnInitialized()
 	{
+		EventHandler.OnError += StateHasChanged;
 		EventHandler.OnStarted += StateHasChanged;
 		EventHandler.OnStopped += StateHasChanged;
 	}
 
 	public void Dispose()
 	{
+		EventHandler.OnError += StateHasChanged;
 		EventHandler.OnStarted -= StateHasChanged;
 		EventHandler.OnStopped -= StateHasChanged;
 	}
