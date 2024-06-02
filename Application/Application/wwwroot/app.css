@@ -49,3 +49,9 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+dialog {
+    border-radius:10px;
+    border: 1px solid silver;
+    padding:2px
+}

@@ -1,7 +1,18 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+<RadzenButton Click="() => showDialog = true" Text="show dialog" />
+
+<Modal @bind-Open="showDialog">
+	<MessageBox Title="Sample Dialog" Text="Message box content here" />
+</Modal>
+
+@code {
+	bool showDialog = false;
+}

@@ -1,0 +1,28 @@
+﻿<div class="rz-dialog-titlebar">    
+	<div class="rz-dialog-title" style="display: inline">
+		@Title
+	</div>
+	<a role="button" class="rz-dialog-titlebar-icon rz-dialog-titlebar-close" tabindex="0">        
+		<span class="rzi rzi-times"></span>
+	</a>
+</div>
+<div class="rz-dialog-content rz-dialog-content">    
+	<p class="rz-dialog-alert-message">
+		@Text
+	</p>
+	<div class="rz-dialog-alert-buttons">
+		<button tabindex="0" type="button" class="rz-button rz-button-md rz-variant-filled rz-primary rz-shade-default">       
+			<span class="rz-button-box">                
+				<span class="rz-button-text">Ok</span>
+			</span>
+		</button>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public string Title { get; set; } = "Title";
+
+	[Parameter]
+	public string Text { get; set; } = default!;
+}
