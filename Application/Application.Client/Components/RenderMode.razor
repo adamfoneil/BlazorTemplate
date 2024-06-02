@@ -1,0 +1,10 @@
+﻿<RadzenBadge IsPill="true" Text="@mode.ToString()" />
+
+@code {
+	RenderModeOptions mode;
+
+	protected override void OnInitialized()
+	{
+		mode = CurrentRenderMode.Value;
+	}
+}
