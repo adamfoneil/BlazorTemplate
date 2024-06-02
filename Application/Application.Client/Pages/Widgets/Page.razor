@@ -1,8 +1,10 @@
 ﻿@page "/Widgets"
-@rendermode InteractiveWebAssembly
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
 @attribute [Authorize]
 
 <RadzenComponents />
+
+<RenderMode />
 
 <div class="d-flex justify-content-between">
 	<h3>My Widgets</h3>
