@@ -6,9 +6,9 @@
 /// </summary>
 public interface IUserInfo
 {
-	string Id { get; set; }
-	string? UserName { get; set; }
-	string? Email { get; set; }
-	string? TimeZoneId { get; set; }
-	string? PhoneNumber { get; set; }
+    string Id { get; set; }
+    string? UserName { get; set; }
+    string? Email { get; set; }
+    string? TimeZoneId { get; set; }
+    string? PhoneNumber { get; set; }
 }

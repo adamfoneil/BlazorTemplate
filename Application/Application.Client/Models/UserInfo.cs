@@ -7,18 +7,18 @@ namespace Application.Client.Models;
 // to expose more information about the authenticated user to the client.
 public class UserInfo : IUserInfo
 {
-	public string Id { get; set; } = default!;
-	public string? Email { get; set; }
-	public string? UserName { get; set; }
-	public string? TimeZoneId { get; set; }
-	public string? PhoneNumber { get; set; }
+    public string Id { get; set; } = default!;
+    public string? Email { get; set; }
+    public string? UserName { get; set; }
+    public string? TimeZoneId { get; set; }
+    public string? PhoneNumber { get; set; }
 
-	public static UserInfo FromApplicationUser(ApplicationUser user) => new UserInfo
-	{
-		Id = user.Id,
-		Email = user.Email,
-		UserName = user.UserName,
-		TimeZoneId = user.TimeZoneId,
-		PhoneNumber = user.PhoneNumber
-	};
+    public static UserInfo FromApplicationUser(ApplicationUser user) => new UserInfo
+    {
+        Id = user.Id,
+        Email = user.Email,
+        UserName = user.UserName,
+        TimeZoneId = user.TimeZoneId,
+        PhoneNumber = user.PhoneNumber
+    };
 }
