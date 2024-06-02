@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\adamo\source\repos\BlazorTemplate\ApiClientBaseLibrary\.editorconfig" />
+  </ItemGroup>
+
 </Project>

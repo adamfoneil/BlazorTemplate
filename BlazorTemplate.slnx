@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
   <Folder Name="/Libraries/">
     <Project Path="ApiClientBaseLibrary\ApiClientBaseLibrary.csproj" />
     <Project Path="AuthLibrary\AuthLibrary.csproj" />
