@@ -1,15 +1,15 @@
 ﻿namespace Application.Client.Extensions;
 
-public enum RenderModeOptions
+public enum RenderLocationOptions
 {
 	Server,
-	WebAssembly
+	Client
 }
 
-public static class CurrentRenderMode
+public static class CurrentRenderLocation
 {
 	/// <summary>
-	/// https://stackoverflow.com/a/77703444/25057433
+	/// adapted from https://stackoverflow.com/a/77703444/25057433
 	/// </summary>
-	public static RenderModeOptions Value => OperatingSystem.IsBrowser() ? RenderModeOptions.WebAssembly : RenderModeOptions.Server;
+	public static RenderLocationOptions Value => OperatingSystem.IsBrowser() ? RenderLocationOptions.Client : RenderLocationOptions.Server;
 }
