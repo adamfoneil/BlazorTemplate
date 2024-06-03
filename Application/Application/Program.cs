@@ -1,4 +1,5 @@
 using Application;
+using Application.Abstract;
 using Application.Client;
 using Application.Components.Account;
 using Application.Extensions;
@@ -85,7 +86,7 @@ app.MapAdditionalIdentityEndpoints();
 
 var apiGroup = app.MapGroup("/api").RequireAuthorization();
 
-apiGroup.MapDbSet("/widgets", (db) => db.Widgets);
+new ApiMapping<Widget>("/widgets").Map(apiGroup);	
 
 app.Run();
 
