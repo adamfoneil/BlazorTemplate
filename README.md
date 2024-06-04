@@ -18,10 +18,9 @@ This brings together several opinions I have about how Blazor projects should be
     - see [DbSetApiMapping](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Abstract/DbSetApiMapping.cs) along with implementation [ApiMapping](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/ApiMapping.cs), and lastly [where used](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Program.cs#L89)
     - [time zone editing](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Components/Account/Pages/Manage/Index.razor#L32-L41) on the user profile manage page
 - various Library projects are things that could be extracted to standalone packages, but are in the solution because they're still evolving:
-  - [ApiClientBaseLibrary](https://github.com/adamfoneil/BlazorTemplate/tree/master/ApiClientBaseLibrary) for low-level http client operations
-  - [AuthLibrary](https://github.com/adamfoneil/BlazorTemplate/tree/master/AuthLibrary) has WASM-specific stuff, such as
-    - [CookieHandler.cs](https://github.com/adamfoneil/BlazorTemplate/blob/master/AuthLibrary/CookieHandler.cs)
-    - a special [AddHttpClient](https://github.com/adamfoneil/BlazorTemplate/blob/master/AuthLibrary/ServiceCollectionExtensions.cs#L7) extension method that lets you setup an http client for WASM use, invoked
+  - [ClientHelpers](https://github.com/adamfoneil/BlazorTemplate/tree/master/ClientHelpers) for low-level http client operations
+    - [CookieHandler.cs](https://github.com/adamfoneil/BlazorTemplate/blob/master/ClientHelpers/CookieHandler.cs)
+    - a special [AddHttpClient](https://github.com/adamfoneil/BlazorTemplate/blob/master/ClientHelpers/ServiceCollectionExtensions.cs) extension method that lets you setup an http client for WASM use, invoked
       - in the backend [here](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Program.cs#L52)
       - in the frontend [here](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application.Client/Program.cs#L18)
   - [Radzen.Components](https://github.com/adamfoneil/BlazorTemplate/tree/master/Radzen.Components) builds upon existing [Radzen](https://blazor.radzen.com/) components, notably
