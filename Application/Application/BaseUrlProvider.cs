@@ -1,6 +1,6 @@
 ﻿namespace Application;
 
-public class BaseUrlProvider
+internal class BaseUrlProvider
 {
 	public string BaseUrl { get; private set; } = default!;
 

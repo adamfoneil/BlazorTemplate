@@ -5,6 +5,7 @@ using Application.Extensions;
 using ClientHelpers;
 using Domain;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
@@ -29,6 +30,7 @@ builder.Services.AddSingleton<BaseUrlProvider>();
 builder.Services.AddScoped<ApiEventHandler>(); // this doesn't seem to work from the backend
 builder.Services.AddScoped<ApiClient>();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
+builder.Services.AddScoped<CircuitHandler, LoggingCircuitHandler>();
 
 builder.Services.AddAuthentication(options =>
 	{
