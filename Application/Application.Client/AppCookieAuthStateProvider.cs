@@ -1,5 +1,5 @@
 ﻿using Application.Client.Models;
-using AuthLibrary;
+using ClientHelpers;
 using Domain.Extensions;
 using System.Security.Claims;
 

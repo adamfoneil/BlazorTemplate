@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 
-namespace ApiClientBaseLibrary;
+namespace ClientHelpers;
 
 /// <summary>
 /// since Refit doesn't seem to work with authentication in Blazor WebAssembly, this is kind of the next best thing

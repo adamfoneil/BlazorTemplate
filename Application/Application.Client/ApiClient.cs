@@ -1,4 +1,4 @@
-﻿using ApiClientBaseLibrary;
+﻿using ClientHelpers;
 
 namespace Application.Client;
 

@@ -2,7 +2,7 @@ using Application;
 using Application.Client;
 using Application.Components.Account;
 using Application.Extensions;
-using AuthLibrary;
+using ClientHelpers;
 using Domain;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -85,7 +85,7 @@ app.MapAdditionalIdentityEndpoints();
 
 var apiGroup = app.MapGroup("/api").RequireAuthorization();
 
-new ApiMapping<Widget>("/widgets").Map(apiGroup);	
+new DbSetApiHandler<Widget>("/widgets").Map(apiGroup);	
 
 app.Run();
 

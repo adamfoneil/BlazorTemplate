@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.WebAssembly.Http;
 using Microsoft.Extensions.Logging;
 
-namespace AuthLibrary;
+namespace ClientHelpers;
 
 public class CookieHandler(ILogger<CookieHandler> logger) : DelegatingHandler
 {

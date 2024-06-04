@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace AuthLibrary;
+namespace ClientHelpers;
 
 public static class ServiceCollectionExtensions
 {

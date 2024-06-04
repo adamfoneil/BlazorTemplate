@@ -1,5 +1,4 @@
 ﻿using Application.Client.Models;
-using BackendHelpers;
 using Domain.Conventions;
 using Domain.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +8,7 @@ using Service.Extensions;
 
 namespace Application;
 
-internal class ApiMapping<TEntity>(string pattern) : DbSetApiMapping<ApplicationDbContext, TEntity, int>(pattern) where TEntity : BaseTable
+internal class DbSetApiHandler<TEntity>(string pattern) : DbSetApiHandlerBase<ApplicationDbContext, TEntity, int>(pattern) where TEntity : BaseTable
 {
 	protected override async Task DeleteAsync(ApplicationDbContext dbContext, HttpContext httpContext, int id)
 	{

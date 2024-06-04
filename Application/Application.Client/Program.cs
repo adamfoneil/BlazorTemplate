@@ -1,5 +1,5 @@
 using Application.Client;
-using AuthLibrary;
+using ClientHelpers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;

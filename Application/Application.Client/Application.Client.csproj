@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\AuthLibrary\AuthLibrary.csproj" />
+    <ProjectReference Include="..\..\ClientHelpers\ClientHelpers.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.csproj" />
     <ProjectReference Include="..\..\Radzen.Components\Radzen.Components.csproj" />
     <ProjectReference Include="..\..\Service\Service.csproj" />

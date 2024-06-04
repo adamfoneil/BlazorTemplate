@@ -2,7 +2,7 @@
 
 namespace Application;
 
-internal abstract class DbSetApiMapping<TDbContext, TEntity, TKey>(string pattern)
+internal abstract class DbSetApiHandlerBase<TDbContext, TEntity, TKey>(string pattern)
 	where TDbContext : DbContext
 	where TEntity : class
 	where TKey : struct

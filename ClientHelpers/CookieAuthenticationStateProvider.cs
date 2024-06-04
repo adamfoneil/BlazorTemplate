@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Text.Json;
 
-namespace AuthLibrary;
+namespace ClientHelpers;
 
 /// <summary>
 /// based on https://github.com/dotnet/blazor-samples/blob/main/8.0/BlazorWebAssemblyStandaloneWithIdentity/BlazorWasmAuth/Identity/CookieAuthenticationStateProvider.cs
