@@ -15,7 +15,7 @@ This brings together several opinions I have about how Blazor projects should be
     - [ApiEventUI](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application.Client/Components/ApiEventUI.razor) which uses a loading spinner and error message [Modal](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application.Client/Components/Modal.razor)
   - backend [Application](https://github.com/adamfoneil/BlazorTemplate/tree/master/Application/Application)
     - see [API endpoint setup](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Program.cs#L85-L87) and
-    - [MapDbSet](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Extensions/DbContextExtensions.cs#L16) extension method
+    - see [DbSetApiMapping](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Abstract/DbSetApiMapping.cs) along with implementation [ApiMapping](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/ApiMapping.cs), and lastly [where used](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Program.cs#L89)
     - [time zone editing](https://github.com/adamfoneil/BlazorTemplate/blob/master/Application/Application/Components/Account/Pages/Manage/Index.razor#L32-L41) on the user profile manage page
 - various Library projects are things that could be extracted to standalone packages, but are in the solution because they're still evolving:
   - [ApiClientBaseLibrary](https://github.com/adamfoneil/BlazorTemplate/tree/master/ApiClientBaseLibrary) for low-level http client operations
