@@ -3,12 +3,13 @@
     <File Path=".editorconfig" />
   </Folder>
   <Folder Name="/Libraries/">
-    <Project Path="ApiClientBaseLibrary\ApiClientBaseLibrary.csproj" />
     <Project Path="AuthLibrary\AuthLibrary.csproj" />
+    <Project Path="BackendHelpers\BackendHelpers.csproj" />
     <Project Path="Radzen.Components\Radzen.Components.csproj" />
   </Folder>
   <Project Path="Application\Application.Client\Application.Client.csproj" />
   <Project Path="Application\Application\Application.csproj" />
   <Project Path="Domain\Domain.csproj" />
   <Project Path="Service\Service.csproj" />
+</Solution>
 </Solution>

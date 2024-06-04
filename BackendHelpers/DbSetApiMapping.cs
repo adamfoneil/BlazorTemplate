@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Application.Abstract;
+namespace BackendHelpers;
 
-internal abstract class DbSetApiMapping<TDbContext, TEntity, TKey>(string pattern)
+public abstract class DbSetApiMapping<TDbContext, TEntity, TKey>(string pattern)
 	where TDbContext : DbContext
 	where TEntity : class
 	where TKey : struct

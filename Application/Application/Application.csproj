@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BackendHelpers\BackendHelpers.csproj" />
     <ProjectReference Include="..\..\Service\Service.csproj" />
     <ProjectReference Include="..\Application.Client\Application.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.5" />
