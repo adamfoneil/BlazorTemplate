@@ -2,6 +2,8 @@
 using Serilog.Configuration;
 using Serilog.Context;
 using Serilog.Sinks.MSSqlServer;
+using Serilog.Templates;
+using Serilog.Templates.Themes;
 using System.Data;
 
 namespace Application.Extensions;
@@ -18,6 +20,13 @@ internal static class SerilogExtensions
 			}
 		});
 	}
+
+	internal const string Schema = "log";
+	internal const string TableName = "Serilog";
+
+	internal static ExpressionTemplate CustomConsoleOutput => new(
+		"[{@t:HH:mm:ss} {SourceContext} <{UserName}> {@l:u3}{#if @tr is not null} ({substring(@tr,0,4)}:{substring(@sp,0,4)}){#end}] {@m}\n{@x}",
+		theme: TemplateTheme.Literate);
 
 	internal static void SqlServerCustomConfig(this LoggerSinkConfiguration config, string connectionString)
 	{
@@ -37,9 +46,12 @@ internal static class SerilogExtensions
 
 		config.MSSqlServer(connectionString, new MSSqlServerSinkOptions()
 		{
-			SchemaName = "log",
-			TableName = "Serilog",
+			SchemaName = Schema,
+			TableName = TableName,
 			AutoCreateSqlTable = true,
 		}, columnOptions: columnOptions);
 	}
+
+	internal static void AddSerilogCleanup(this IServiceCollection services, string connectionString, int retainDays) => 
+		services.AddTransient(sp => new SerilogCleanup(connectionString, Schema, TableName, retainDays, sp.GetRequiredService<ILogger<SerilogCleanup>>()));
 }

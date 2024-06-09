@@ -3,6 +3,7 @@ using Application.Client;
 using Application.Components.Account;
 using Application.Extensions;
 using ClientHelpers;
+using Coravel;
 using Domain;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.Circuits;
@@ -10,11 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
 using Serilog;
-using Serilog.Sinks.MSSqlServer;
-using Serilog.Templates;
-using Serilog.Templates.Themes;
 using Service;
-using System.Data;
 
 Log.Logger = new LoggerConfiguration()
 	.WriteTo.Console()
@@ -30,12 +27,13 @@ builder.Services.AddSerilog((services, config) => config
 	.ReadFrom.Configuration(builder.Configuration)
 	.ReadFrom.Services(services)
 	.Enrich.FromLogContext()
-	.WriteTo.Console(new ExpressionTemplate(		
-		"[{@t:HH:mm:ss} {SourceContext} <{UserName}> {@l:u3}{#if @tr is not null} ({substring(@tr,0,4)}:{substring(@sp,0,4)}){#end}] {@m}\n{@x}",
-		theme: TemplateTheme.Literate))
+	.WriteTo.Console(SerilogExtensions.CustomConsoleOutput)
 	.WriteTo.SqlServerCustomConfig(connectionString));
 
-// Add services to the container.
+builder.Services.AddSerilogCleanup(connectionString, 5);
+
+builder.Services.AddScheduler();
+
 builder.Services.AddRazorComponents()
 	.AddInteractiveServerComponents()
 	.AddInteractiveWebAssemblyComponents();
@@ -93,6 +91,11 @@ else
 	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	app.UseHsts();
 }
+
+app.Services.UseScheduler(scheduler =>
+{
+	scheduler.Schedule<SerilogCleanup>().DailyAtHour(2);
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
