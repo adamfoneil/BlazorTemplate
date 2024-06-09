@@ -1,34 +1,33 @@
 ﻿using Coravel.Invocable;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using System.Data;
 using System.Diagnostics;
 
-namespace Application.Extensions;
+namespace Application.Features.Serilog;
 
-internal class SerilogCleanup(string connectionString, string schema, string tableName, int retainDays, ILogger<SerilogCleanup> logger) : IInvocable, ICancellableInvocable
+internal class Cleanup(string connectionString, IOptions<SerilogOptions> options, ILogger<Cleanup> logger) : IInvocable, ICancellableInvocable
 {
 	private readonly string _connectionString = connectionString;
-	private readonly string _schema = schema;
-	private readonly string _tableName = tableName;
-	private readonly int _retainDays = retainDays;
-	private readonly ILogger<SerilogCleanup> _logger = logger;
+	private readonly SerilogOptions _options = options.Value;
+	private readonly ILogger<Cleanup> _logger = logger;
 
-	public CancellationToken CancellationToken { get; set; }	
+	public CancellationToken CancellationToken { get; set; }
 
 	public async Task Invoke()
 	{
-		_logger.LogDebug("Deleting logs older than {RetainDays} days", _retainDays);
+		_logger.LogDebug("Deleting logs older than {RetainDays} days", _options.RetainDays);
 
 		using var cn = new SqlConnection(_connectionString);
-		int deleted = 0;		
+		var deleted = 0;
 
 		try
 		{
 			var sw = Stopwatch.StartNew();
 			do
 			{
-				int chunk = await DeleteTopAsync(cn, _schema, _tableName, _retainDays, 10);
+				var chunk = await DeleteTopAsync(cn, _options.Schema, _options.TableName, _options.RetainDays, 10);
 				deleted += chunk;
 				if (chunk == 0) break;
 			} while (!CancellationToken.IsCancellationRequested);
@@ -43,11 +42,11 @@ internal class SerilogCleanup(string connectionString, string schema, string tab
 
 	private static async Task<int> DeleteTopAsync(IDbConnection connection, string schema, string tableName, int retainDays, int chunkSize)
 	{
-		var sql = 
+		var sql =
 			$@"DELETE TOP ({chunkSize}) 
 			FROM [{schema}].[{tableName}]
 			WHERE [Timestamp] < DATEADD(DAY, -{retainDays}, GETUTCDATE())";
-			
+
 		return await connection.ExecuteAsync(sql);
-	}	
+	}
 }

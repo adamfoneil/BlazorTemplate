@@ -2,6 +2,7 @@ using Application;
 using Application.Client;
 using Application.Components.Account;
 using Application.Extensions;
+using Application.Features.Serilog;
 using ClientHelpers;
 using Coravel;
 using Domain;
@@ -23,14 +24,16 @@ builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+builder.Services.Configure<SerilogOptions>(builder.Configuration.GetSection("SerilogOptions"));
+
 builder.Services.AddSerilog((services, config) => config
 	.ReadFrom.Configuration(builder.Configuration)
 	.ReadFrom.Services(services)
 	.Enrich.FromLogContext()
-	.WriteTo.Console(SerilogExtensions.CustomConsoleOutput)
-	.WriteTo.SqlServerCustomConfig(connectionString));
+	.WriteTo.Console(Extensions.CustomConsoleOutput)
+	.WriteTo.SqlServerCustomConfig(builder.Configuration));
 
-builder.Services.AddSerilogCleanup(connectionString, 5);
+builder.Services.AddSerilogCleanup(builder.Configuration);
 
 builder.Services.AddScheduler();
 
@@ -94,7 +97,7 @@ else
 
 app.Services.UseScheduler(scheduler =>
 {
-	scheduler.Schedule<SerilogCleanup>().DailyAtHour(2);
+	scheduler.Schedule<Cleanup>().DailyAtHour(2);
 });
 
 app.UseHttpsRedirection();

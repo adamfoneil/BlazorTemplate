@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Microsoft.Extensions.Options;
+using Serilog;
 using Serilog.Configuration;
 using Serilog.Context;
 using Serilog.Sinks.MSSqlServer;
@@ -6,9 +7,9 @@ using Serilog.Templates;
 using Serilog.Templates.Themes;
 using System.Data;
 
-namespace Application.Extensions;
+namespace Application.Features.Serilog;
 
-internal static class SerilogExtensions
+internal static class Extensions
 {
 	internal static void UseSerilogUserName(this WebApplication app)
 	{
@@ -28,8 +29,11 @@ internal static class SerilogExtensions
 		"[{@t:HH:mm:ss} {SourceContext} <{UserName}> {@l:u3}{#if @tr is not null} ({substring(@tr,0,4)}:{substring(@sp,0,4)}){#end}] {@m}\n{@x}",
 		theme: TemplateTheme.Literate);
 
-	internal static void SqlServerCustomConfig(this LoggerSinkConfiguration config, string connectionString)
+	internal static void SqlServerCustomConfig(this LoggerSinkConfiguration config, IConfiguration configuration)
 	{
+		var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+		var options = configuration.GetSection("SerilogOptions").Get<SerilogOptions>() ?? throw new Exception("Missing 'SerilogOptions' section");
+
 		var columnOptions = new ColumnOptions()
 		{
 			AdditionalColumns =
@@ -46,12 +50,17 @@ internal static class SerilogExtensions
 
 		config.MSSqlServer(connectionString, new MSSqlServerSinkOptions()
 		{
-			SchemaName = Schema,
-			TableName = TableName,
+			SchemaName = options.Schema,
+			TableName = options.TableName,
 			AutoCreateSqlTable = true,
 		}, columnOptions: columnOptions);
 	}
 
-	internal static void AddSerilogCleanup(this IServiceCollection services, string connectionString, int retainDays) => 
-		services.AddTransient(sp => new SerilogCleanup(connectionString, Schema, TableName, retainDays, sp.GetRequiredService<ILogger<SerilogCleanup>>()));
+	internal static void AddSerilogCleanup(this IServiceCollection services, IConfiguration config)
+	{
+		var options = Options.Create(config.GetSection("SerilogOptions").Get<SerilogOptions>() ?? throw new Exception("Missing 'SerilogOptions' section"));
+		var connectionString = config.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+		services.AddTransient(sp => new Cleanup(connectionString, options, sp.GetRequiredService<ILogger<Cleanup>>()));
+	}
+		
 }
