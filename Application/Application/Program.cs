@@ -9,11 +9,27 @@ using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
+using Serilog;
+using Serilog.Templates;
+using Serilog.Templates.Themes;
 using Service;
+
+Log.Logger = new LoggerConfiguration()
+	.WriteTo.Console()
+	.CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
+builder.Services.AddSerilog((services, config) => config
+	.ReadFrom.Configuration(builder.Configuration)
+	.ReadFrom.Services(services)
+	.Enrich.FromLogContext()
+	.WriteTo.Console(new ExpressionTemplate(
+		// Include trace and span ids when present.
+		"[{@t:HH:mm:ss} {SourceContext} {@l:u3}{#if @tr is not null} ({substring(@tr,0,4)}:{substring(@sp,0,4)}){#end}] {@m}\n{@x}",
+		theme: TemplateTheme.Literate)));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -57,6 +73,7 @@ builder.Services.AddHttpClient<CookieHandler>(ApiClient.Name, (sp, client) => sp
 builder.Services.MigrateDatabase<ApplicationDbContext>();
 
 var app = builder.Build();
+app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
