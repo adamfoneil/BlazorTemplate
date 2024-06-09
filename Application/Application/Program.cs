@@ -33,22 +33,7 @@ builder.Services.AddSerilog((services, config) => config
 	.WriteTo.Console(new ExpressionTemplate(		
 		"[{@t:HH:mm:ss} {SourceContext} <{UserName}> {@l:u3}{#if @tr is not null} ({substring(@tr,0,4)}:{substring(@sp,0,4)}){#end}] {@m}\n{@x}",
 		theme: TemplateTheme.Literate))
-	.WriteTo.MSSqlServer(connectionString, new MSSqlServerSinkOptions() 
-	{ 
-		SchemaName = "log", 
-		TableName = "Serilog",		
-		AutoCreateSqlTable = true,		
-	}, columnOptions: new ColumnOptions()
-	{
-		AdditionalColumns =
-		[
-			new("UserName", SqlDbType.NVarChar, true, 50),
-			new("SourceContext", SqlDbType.NVarChar, true, 100),
-			new("RequestId", SqlDbType.NVarChar, true, 100),
-			new("Elapsed", SqlDbType.Float, true),
-			new("CommandText", SqlDbType.NVarChar, true),
-		]
-	}));
+	.WriteTo.SqlServerCustomConfig(connectionString));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
