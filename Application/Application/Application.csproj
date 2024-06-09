@@ -13,6 +13,7 @@
     <ProjectReference Include="..\Application.Client\Application.Client.csproj" />
     <PackageReference Include="Coravel" Version="5.0.3" />
     <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Dapper.QX" Version="1.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.6" />

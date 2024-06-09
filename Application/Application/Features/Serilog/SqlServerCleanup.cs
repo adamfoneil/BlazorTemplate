@@ -7,11 +7,11 @@ using System.Diagnostics;
 
 namespace Application.Features.Serilog;
 
-internal class Cleanup(string connectionString, IOptions<SerilogOptions> options, ILogger<Cleanup> logger) : IInvocable, ICancellableInvocable
+internal class SqlServerCleanup(string connectionString, IOptions<SerilogOptions> options, ILogger<SqlServerCleanup> logger) : IInvocable, ICancellableInvocable
 {
 	private readonly string _connectionString = connectionString;
 	private readonly SerilogOptions _options = options.Value;
-	private readonly ILogger<Cleanup> _logger = logger;
+	private readonly ILogger<SqlServerCleanup> _logger = logger;
 
 	public CancellationToken CancellationToken { get; set; }
 
@@ -27,6 +27,7 @@ internal class Cleanup(string connectionString, IOptions<SerilogOptions> options
 			var sw = Stopwatch.StartNew();
 			do
 			{
+				// delete in small chunks to avoid locking
 				var chunk = await DeleteTopAsync(cn, _options.Schema, _options.TableName, _options.RetainDays, 10);
 				deleted += chunk;
 				if (chunk == 0) break;
@@ -42,11 +43,9 @@ internal class Cleanup(string connectionString, IOptions<SerilogOptions> options
 
 	private static async Task<int> DeleteTopAsync(IDbConnection connection, string schema, string tableName, int retainDays, int chunkSize)
 	{
-		var sql =
-			$@"DELETE TOP ({chunkSize}) 
-			FROM [{schema}].[{tableName}]
-			WHERE [Timestamp] < DATEADD(DAY, -{retainDays}, GETUTCDATE())";
+		var sql = $@"DELETE TOP ({chunkSize}) FROM [{schema}].[{tableName}] WHERE [Timestamp] < DATEADD(DAY, -{retainDays}, GETUTCDATE())";
 
-		return await connection.ExecuteAsync(sql);
+		// deletes can be very slow, so ample timeout is added
+		return await connection.ExecuteAsync(sql, commandTimeout: 90);
 	}
 }

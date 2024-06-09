@@ -1,4 +1,10 @@
 ﻿@page "/Serilog"
+@attribute [Authorize(Roles = "Admin")]
+@using Application.Features.Serilog
+@inject IOptions<SerilogOptions> SerilogOptions
+
+<h3>Serilog</h3>
+
 
 
 @code {

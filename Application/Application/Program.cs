@@ -33,7 +33,7 @@ builder.Services.AddSerilog((services, config) => config
 	.WriteTo.Console(Extensions.CustomConsoleOutput)
 	.WriteTo.SqlServerCustomConfig(builder.Configuration));
 
-builder.Services.AddSerilogCleanup(builder.Configuration);
+builder.Services.AddSerilogSqlServerCleanup(builder.Configuration);
 
 builder.Services.AddScheduler();
 
@@ -71,8 +71,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-	.AddEntityFrameworkStores<ApplicationDbContext>()
-	.AddSignInManager()
+	.AddRoles<IdentityRole>()
+	.AddRoleManager<RoleManager<IdentityRole>>()
+	.AddEntityFrameworkStores<ApplicationDbContext>()	
+	.AddSignInManager()	
 	.AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
@@ -97,7 +99,7 @@ else
 
 app.Services.UseScheduler(scheduler =>
 {
-	scheduler.Schedule<Cleanup>().DailyAtHour(2);
+	scheduler.Schedule<SqlServerCleanup>().DailyAtHour(2);
 });
 
 app.UseHttpsRedirection();

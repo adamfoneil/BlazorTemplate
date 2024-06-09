@@ -56,11 +56,11 @@ internal static class Extensions
 		}, columnOptions: columnOptions);
 	}
 
-	internal static void AddSerilogCleanup(this IServiceCollection services, IConfiguration config)
+	internal static void AddSerilogSqlServerCleanup(this IServiceCollection services, IConfiguration config)
 	{
 		var options = Options.Create(config.GetSection("SerilogOptions").Get<SerilogOptions>() ?? throw new Exception("Missing 'SerilogOptions' section"));
 		var connectionString = config.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-		services.AddTransient(sp => new Cleanup(connectionString, options, sp.GetRequiredService<ILogger<Cleanup>>()));
+		services.AddTransient(sp => new SqlServerCleanup(connectionString, options, sp.GetRequiredService<ILogger<SqlServerCleanup>>()));
 	}
 		
 }
