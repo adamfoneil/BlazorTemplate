@@ -10,10 +10,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
 using Serilog;
-using Serilog.Context;
+using Serilog.Sinks.MSSqlServer;
 using Serilog.Templates;
 using Serilog.Templates.Themes;
 using Service;
+using System.Data;
 
 Log.Logger = new LoggerConfiguration()
 	.WriteTo.Console()
@@ -23,13 +24,31 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
 builder.Services.AddSerilog((services, config) => config
 	.ReadFrom.Configuration(builder.Configuration)
 	.ReadFrom.Services(services)
 	.Enrich.FromLogContext()
 	.WriteTo.Console(new ExpressionTemplate(		
 		"[{@t:HH:mm:ss} {SourceContext} <{UserName}> {@l:u3}{#if @tr is not null} ({substring(@tr,0,4)}:{substring(@sp,0,4)}){#end}] {@m}\n{@x}",
-		theme: TemplateTheme.Literate)));
+		theme: TemplateTheme.Literate))
+	.WriteTo.MSSqlServer(connectionString, new MSSqlServerSinkOptions() 
+	{ 
+		SchemaName = "log", 
+		TableName = "Serilog",		
+		AutoCreateSqlTable = true,		
+	}, columnOptions: new ColumnOptions()
+	{
+		AdditionalColumns =
+		[
+			new("UserName", SqlDbType.NVarChar, true, 50),
+			new("SourceContext", SqlDbType.NVarChar, true, 100),
+			new("RequestId", SqlDbType.NVarChar, true, 100),
+			new("Elapsed", SqlDbType.Float, true),
+			new("CommandText", SqlDbType.NVarChar, true),
+		]
+	}));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -57,7 +76,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.DisableApiRedirectToLogin();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
 	options.UseSqlServer(connectionString);
