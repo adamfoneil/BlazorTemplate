@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Coravel" Version="5.0.3" />
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Dapper.QX" Version="1.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.6" />
+	<PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+	<PackageReference Include="Serilog.Expressions" Version="4.0.0" />
+	<PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.6.1" />
+  </ItemGroup>
+
+</Project>

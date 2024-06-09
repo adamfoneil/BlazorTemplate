@@ -9,6 +9,7 @@
 
   <ItemGroup>    
     <ProjectReference Include="..\..\ClientHelpers\ClientHelpers.csproj" />    
+    <ProjectReference Include="..\..\Serilog.Components\Serilog.Components.csproj" />    
     <ProjectReference Include="..\..\Service\Service.csproj" />
     <ProjectReference Include="..\Application.Client\Application.Client.csproj" />
     <PackageReference Include="Coravel" Version="5.0.3" />

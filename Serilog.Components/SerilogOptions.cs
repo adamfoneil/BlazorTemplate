@@ -1,4 +1,4 @@
-﻿namespace Application.Features.Serilog;
+﻿namespace Serilog.Components;
 
 public class SerilogOptions
 {

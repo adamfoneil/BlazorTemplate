@@ -2,7 +2,6 @@ using Application;
 using Application.Client;
 using Application.Components.Account;
 using Application.Extensions;
-using Application.Features.Serilog;
 using ClientHelpers;
 using Coravel;
 using Domain;
@@ -12,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
 using Serilog;
+using Serilog.Components;
 using Service;
 
 Log.Logger = new LoggerConfiguration()
@@ -61,7 +61,6 @@ builder.Services.AddAuthentication(options =>
 	.AddIdentityCookies();
 
 builder.Services.DisableApiRedirectToLogin();
-
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -114,7 +113,7 @@ app.UseSerilogRequestLogging();
 app.MapRazorComponents<Application.Components.App>()
 	.AddInteractiveServerRenderMode()
 	.AddInteractiveWebAssemblyRenderMode()
-	.AddAdditionalAssemblies(typeof(_Imports).Assembly);
+	.AddAdditionalAssemblies(typeof(ApiClient).Assembly);
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();

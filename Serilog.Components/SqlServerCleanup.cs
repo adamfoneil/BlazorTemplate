@@ -1,13 +1,14 @@
 ﻿using Coravel.Invocable;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Data;
 using System.Diagnostics;
 
-namespace Application.Features.Serilog;
+namespace Serilog.Components;
 
-internal class SqlServerCleanup(string connectionString, IOptions<SerilogOptions> options, ILogger<SqlServerCleanup> logger) : IInvocable, ICancellableInvocable
+public class SqlServerCleanup(string connectionString, IOptions<SerilogOptions> options, ILogger<SqlServerCleanup> logger) : IInvocable, ICancellableInvocable
 {
 	private readonly string _connectionString = connectionString;
 	private readonly SerilogOptions _options = options.Value;

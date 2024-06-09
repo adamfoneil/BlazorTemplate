@@ -1,7 +1,7 @@
 ﻿using Dapper.QX;
 using Dapper.QX.Attributes;
 
-namespace Application.Components.Pages.Serilog;
+namespace Serilog.Components.Queries;
 
 public class LogEntryResult
 {
@@ -19,7 +19,7 @@ public class LogEntryResult
 	public string? CommandText { get; set; }
 }
 
-internal class LogQuery(string schema, string tableName) : Query<LogEntryResult>(
+internal class LogDetailQuery(string schema, string tableName) : Query<LogEntryResult>(
 	$@"SELECT * FROM [{schema}].[{tableName}] WHERE {{where}} ORDER BY [Timestamp] DESC {{offset}}")
 {
 	[Offset(30)]
