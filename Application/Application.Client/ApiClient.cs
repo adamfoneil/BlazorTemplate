@@ -16,8 +16,8 @@ public partial class ApiClient(
 	/// </summary>
 	protected override void OnStarted(HttpMethod method, string uri)
 	{
-		_eventHandler.Start();
-		Logger.LogDebug("Started: {Method} {Uri}", method, uri);
+		base.OnStarted(method, uri);
+		_eventHandler.Start();		
 	}
 
 	/// <summary>
@@ -25,8 +25,8 @@ public partial class ApiClient(
 	/// </summary>
 	protected override void OnStopped(HttpMethod method, string uri, bool success)
 	{
-		_eventHandler.Stop();
-		if (success) Logger.LogDebug("Success: {Method} {Uri}", method, uri);
+		base.OnStopped(method, uri, success);
+		_eventHandler.Stop();		
 	}
 
 	protected override void OnError(HttpMethod method, string uri, Exception exception)

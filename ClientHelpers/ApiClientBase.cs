@@ -12,9 +12,15 @@ public abstract class ApiClientBase(HttpClient httpClient, ILogger<ApiClientBase
 
 	protected HttpClient Client { get; } = httpClient;
 
-	protected virtual void OnStarted(HttpMethod method, string uri) { }
+	protected virtual void OnStarted(HttpMethod method, string uri) 
+	{
+		Logger.LogDebug("Started: {Method} {Uri}", method, uri);
+	}
 
-	protected virtual void OnStopped(HttpMethod method, string uri, bool success) { }
+	protected virtual void OnStopped(HttpMethod method, string uri, bool success) 
+	{
+		if (success) Logger.LogDebug("Success: {Method} {Uri}", method, uri);
+	}
 
 	protected virtual void OnError(HttpMethod method, string uri, Exception exception) { }
 
