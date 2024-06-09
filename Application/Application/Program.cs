@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
 using Serilog;
+using Serilog.Context;
 using Serilog.Templates;
 using Serilog.Templates.Themes;
 using Service;
@@ -26,9 +27,8 @@ builder.Services.AddSerilog((services, config) => config
 	.ReadFrom.Configuration(builder.Configuration)
 	.ReadFrom.Services(services)
 	.Enrich.FromLogContext()
-	.WriteTo.Console(new ExpressionTemplate(
-		// Include trace and span ids when present.
-		"[{@t:HH:mm:ss} {SourceContext} {@l:u3}{#if @tr is not null} ({substring(@tr,0,4)}:{substring(@sp,0,4)}){#end}] {@m}\n{@x}",
+	.WriteTo.Console(new ExpressionTemplate(		
+		"[{@t:HH:mm:ss} {SourceContext} <{UserName}> {@l:u3}{#if @tr is not null} ({substring(@tr,0,4)}:{substring(@sp,0,4)}){#end}] {@m}\n{@x}",
 		theme: TemplateTheme.Literate)));
 
 // Add services to the container.
@@ -59,7 +59,10 @@ builder.Services.DisableApiRedirectToLogin();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-	options.UseSqlServer(connectionString));
+{
+	options.UseSqlServer(connectionString);
+	//options.EnableSensitiveDataLogging(builder.Environment.IsDevelopment());
+});
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -73,7 +76,6 @@ builder.Services.AddHttpClient<CookieHandler>(ApiClient.Name, (sp, client) => sp
 builder.Services.MigrateDatabase<ApplicationDbContext>();
 
 var app = builder.Build();
-app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -93,6 +95,9 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
+
+app.UseSerilogUserName();
+app.UseSerilogRequestLogging();
 
 app.MapRazorComponents<Application.Components.App>()
 	.AddInteractiveServerRenderMode()
