@@ -1,10 +1,14 @@
 ﻿@page "/Serilog"
+@rendermode InteractiveServer
+@using Application.Models
+@using global::Serilog.Components
 @attribute [Authorize(Roles = "Admin")]
-@using Application.Features.Serilog
 @inject IOptions<SerilogOptions> SerilogOptions
+@inject IOptions<ConnectionStrings> ConnectionStrings
 
 <h3>Serilog</h3>
 
+<SerilogViewer ConnectionString="@ConnectionStrings.Value.DefaultConnection" Options="SerilogOptions.Value" />
 
 
 @code {

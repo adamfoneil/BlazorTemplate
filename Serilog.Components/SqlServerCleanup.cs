@@ -29,7 +29,7 @@ public class SqlServerCleanup(string connectionString, IOptions<SerilogOptions> 
 			do
 			{
 				// delete in small chunks to avoid locking
-				var chunk = await DeleteTopAsync(cn, _options.Schema, _options.TableName, _options.RetainDays, 10);
+				var chunk = await DeleteTopAsync(cn, _options.Schema, _options.TableName, _options.RetainDays, _options.DeleteChunkSize);
 				deleted += chunk;
 				if (chunk == 0) break;
 			} while (!CancellationToken.IsCancellationRequested);

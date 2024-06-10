@@ -2,6 +2,7 @@ using Application;
 using Application.Client;
 using Application.Components.Account;
 using Application.Extensions;
+using Application.Models;
 using ClientHelpers;
 using Coravel;
 using Domain;
@@ -25,6 +26,7 @@ builder.Logging.SetMinimumLevel(LogLevel.Debug);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.Configure<SerilogOptions>(builder.Configuration.GetSection("SerilogOptions"));
+builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection("ConnectionStrings"));
 
 builder.Services.AddSerilog((services, config) => config
 	.ReadFrom.Configuration(builder.Configuration)

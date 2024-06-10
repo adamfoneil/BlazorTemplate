@@ -1,0 +1,51 @@
+@using System.Linq
+
+<RadzenPanel AllowCollapse="true">
+	<ChildContent>
+		<div class="d-flex align-items-top justify-content-between">
+			@DimensionCounts(levelCounts)
+			@DimensionCounts(contextCounts)
+			@DimensionCounts(userCounts)
+			@DimensionCounts(pathCounts)
+		</div>
+	</ChildContent>
+</RadzenPanel>
+
+@code {
+	private IEnumerable<LogDimensionsResult> dimensions = [];
+	private Dictionary<string, int> levelCounts = [];
+	private Dictionary<string, int> contextCounts = [];
+	private Dictionary<string, int> pathCounts = [];
+	private Dictionary<string, int> userCounts = [];
+
+	[Parameter, EditorRequired]
+	public string ConnectionString { get; set; } = default!;
+
+	[Parameter, EditorRequired]
+	public SerilogOptions Options { get; set; } = default!;
+
+	override protected async Task OnInitializedAsync()
+	{
+		ArgumentNullException.ThrowIfNull(ConnectionString, nameof(ConnectionString));
+
+		using var cn = new SqlConnection(ConnectionString);
+		dimensions = await new LogDimensionsQuery(Options.Schema, Options.TableName).ExecuteAsync(cn);
+		levelCounts = dimensions.GroupBy(row => row.Level).ToDictionary(grp => grp.Key, grp => grp.Sum(row => row.Count));
+		contextCounts = dimensions.GroupBy(row => row.SourceContext).ToDictionary(grp => grp.Key, grp => grp.Sum(row => row.Count));
+		pathCounts = dimensions.Where(row => !string.IsNullOrEmpty(row.RequestPath)).GroupBy(row => row.RequestPath!).ToDictionary(grp => grp.Key, grp => grp.Sum(row => row.Count));
+		userCounts = dimensions.Where(row => !string.IsNullOrEmpty(row.UserName)).GroupBy(row => row.UserName!).ToDictionary(grp => grp.Key, grp => grp.Sum(row => row.Count));
+	}
+
+	private RenderFragment<Dictionary<string, int>> DimensionCounts => builder =>
+	@<div>		
+		<ul class="w-100 px-3">
+			@foreach (var (item, count) in builder.OrderByDescending(kp => kp.Value))
+			{
+				<li class="d-flex justify-content-between">
+					<span class="me-2">@item</span>
+					<span class="ms-2">@count</span>
+				</li>
+			}
+		</ul>
+	</div>;	
+}
